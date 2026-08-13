@@ -24,15 +24,28 @@ const tagWeights = [
   'text-[15px] font-semibold text-foreground',
 ] as const;
 
-// The design's new-job-1 intake composer: one page carrying the whole
-// journey — describe or pick a type, satisfy prerequisites, confirm the
-// coordinator's routing, and start.
+type Step = 'intake' | 'scoping' | 'confirm';
+const steps: Step[] = ['intake', 'scoping', 'confirm'];
+
+const progressByStep: Record<Step, { label: string; pct: number } | null> = {
+  intake: null,
+  scoping: { label: '2 / 3', pct: 66 },
+  confirm: { label: '3 / 3', pct: 100 },
+};
+
+// The design's JobComposer — one component, three states (S60BHM). Each
+// state toggles sections per the design's enabled matrix: Intake shows the
+// tag cloud, Scoping the prerequisites, Confirm the paraphrase, coordinator
+// routing, gate ladder, and commit bar.
 export function NewJobComposer({ draft }: { draft: NewJobDraft }) {
   const navigate = useNavigate();
+  const [step, setStep] = useState<Step>('intake');
   const [scale, setScale] = useState(draft.selectedScale);
   const [jobType, setJobType] = useState(draft.jobType);
   const [intent, setIntent] = useState('');
 
+  const stepIndex = steps.indexOf(step);
+  const progress = progressByStep[step];
   const startJob = () => navigate({ to: '/jobs' });
 
   return (
@@ -40,37 +53,47 @@ export function NewJobComposer({ draft }: { draft: NewJobDraft }) {
       <header className="flex flex-col gap-2">
         <h1 className="font-bold text-[32px] text-foreground">{draft.title}</h1>
         <div className="flex items-center gap-1.5">
-          {draft.steps.map((step, index) => (
-            <Fragment key={step}>
+          {draft.steps.map((label, index) => (
+            <Fragment key={label}>
               {index > 0 && (
                 <ChevronRight size={14} className="text-tertiary" aria-hidden />
               )}
-              <span
+              <button
+                type="button"
+                disabled={index > stepIndex}
+                onClick={() => setStep(steps[index])}
+                aria-current={index === stepIndex || undefined}
                 className={`rounded-full px-2.5 py-0.5 text-xs ${
-                  index === 0
+                  index === stepIndex
                     ? 'bg-accent font-semibold text-accent-foreground'
-                    : 'text-muted-foreground'
+                    : index < stepIndex
+                      ? 'text-foreground hover:bg-muted'
+                      : 'text-muted-foreground'
                 }`}
               >
-                {step}
-              </span>
+                {label}
+              </button>
             </Fragment>
           ))}
-          <span className="ml-auto flex items-baseline gap-1.5">
-            <span className="font-bold font-mono text-accent-foreground text-sm">
-              {draft.progress.label}
+          {progress && (
+            <span className="ml-auto flex items-baseline gap-1.5">
+              <span className="font-bold font-mono text-accent-foreground text-sm">
+                {progress.label}
+              </span>
+              <span className="font-mono text-[10px] text-faint">
+                {draft.progress.extra}
+              </span>
             </span>
-            <span className="font-mono text-[10px] text-faint">
-              {draft.progress.extra}
-            </span>
-          </span>
+          )}
         </div>
-        <div className="h-1 overflow-hidden rounded-full bg-muted">
-          <div
-            className="h-full rounded-full bg-accent-strong"
-            style={{ width: `${draft.progress.pct}%` }}
-          />
-        </div>
+        {progress && (
+          <div className="h-1 overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full bg-accent-strong"
+              style={{ width: `${progress.pct}%` }}
+            />
+          </div>
+        )}
         <p className="text-[15px] text-muted-foreground">{draft.subtitle}</p>
       </header>
 
@@ -98,177 +121,200 @@ export function NewJobComposer({ draft }: { draft: NewJobDraft }) {
           </span>
         </div>
 
-        <div className="flex items-center gap-2 rounded-[10px] border border-border px-3 py-2.5">
-          <ShieldIcon />
-          <span className={microLabel}>RISK</span>
-          <span className="text-[11px] text-tertiary">{draft.riskNote}</span>
-          <span className="ml-auto flex gap-1.5">
-            {draft.riskTraits.map((trait) => (
-              <span
-                key={trait}
-                className="rounded-full bg-muted px-2 py-0.5 font-mono text-[9px] text-tertiary"
-              >
-                {trait}
-              </span>
-            ))}
-          </span>
-        </div>
-
-        <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-3 rounded-[10px] bg-muted px-4 py-5">
-          {draft.tags.map((tag) => (
-            <button
-              key={tag.name}
-              type="button"
-              aria-pressed={tag.name === jobType}
-              onClick={() => setJobType(tag.name)}
-              className={`flex items-baseline gap-1 rounded-full bg-card px-2.5 py-1 transition-colors hover:text-foreground ${tagWeights[tag.weight]} ${
-                tag.name === jobType ? 'ring-1 ring-accent-strong' : ''
-              }`}
-            >
-              {tag.name}
-              <span className="font-mono font-normal text-[9px] text-faint">
-                {tag.count}
-              </span>
-            </button>
-          ))}
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <span className={microLabel}>PREREQUISITES</span>
-          <ul className="flex flex-col rounded-xl border border-border">
-            {draft.prereqs.map((prereq) => (
-              <PrereqRow key={prereq.id} prereq={prereq} />
-            ))}
-          </ul>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <span className={microLabel}>{draft.paraphraseLabel}</span>
-          <p className="rounded-[10px] bg-muted px-3.5 py-3 text-[14px] text-foreground">
-            {draft.paraphrase}
-          </p>
-        </div>
-
-        <div className="flex flex-col gap-2.5 rounded-[10px] bg-accent p-3.5">
-          <span className="font-bold font-mono text-[10px] text-accent-foreground">
-            • COORDINATOR
-          </span>
-          <p className="text-[14px] text-foreground">
-            {draft.coordinator.text}
-          </p>
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              className="flex items-center gap-1.5 rounded-md bg-accent-strong px-3.5 py-2 font-semibold text-[13px] text-on-accent"
-            >
-              <Check size={15} aria-hidden />
-              {draft.coordinator.accept}
-            </button>
-            <button
-              type="button"
-              className="text-accent-foreground text-xs hover:underline"
-            >
-              {draft.coordinator.reject}
-            </button>
-          </div>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <div className="flex items-baseline justify-between">
-            <span className={microLabel}>ADDED CONTEXT</span>
-            <button
-              type="button"
-              className="flex items-center gap-1 font-semibold text-accent-foreground text-xs"
-            >
-              <Plus size={13} aria-hidden />
-              add
-            </button>
-          </div>
-          <ul className="flex flex-col gap-2 rounded-[10px] border border-border p-3">
-            {draft.addedContext.map((item) => {
-              const Icon = designIcon(item.icon);
-              return (
-                <li key={item.label} className="flex items-center gap-2">
-                  <Icon
-                    size={14}
-                    className="shrink-0 text-muted-foreground"
-                    aria-hidden
-                  />
-                  <span
-                    className={`min-w-0 flex-1 truncate text-xs ${
-                      item.accent ? 'text-accent-foreground' : 'text-foreground'
-                    }`}
-                  >
-                    {item.label}
-                  </span>
-                  <button
-                    type="button"
-                    aria-label={`Remove ${item.label}`}
-                    className="shrink-0 text-muted-foreground hover:text-foreground"
-                  >
-                    <X size={13} aria-hidden />
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <span className={microLabel}>{draft.ladderLabel}</span>
-          <ul className="flex flex-col rounded-[10px] border border-border">
-            {draft.ladder.map((rung) => {
-              const Icon = designIcon(rung.icon);
-              return (
-                <li
-                  key={rung.name}
-                  className="flex items-center gap-3 border-border border-b px-3.5 py-2.5 last:border-b-0"
+        {step !== 'intake' && (
+          <div className="flex items-center gap-2 rounded-[10px] border border-border px-3 py-2.5">
+            <ShieldIcon />
+            <span className={microLabel}>RISK</span>
+            <span className="text-[11px] text-tertiary">{draft.riskNote}</span>
+            <span className="ml-auto flex gap-1.5">
+              {draft.riskTraits.map((trait) => (
+                <span
+                  key={trait}
+                  className="rounded-full bg-muted px-2 py-0.5 font-mono text-[9px] text-tertiary"
                 >
-                  <Icon
-                    size={16}
-                    className="shrink-0 text-muted-foreground"
-                    aria-hidden
-                  />
-                  <span className="flex-1 font-semibold text-foreground text-sm">
-                    {rung.name}
-                  </span>
-                  <span className="flex items-center gap-1 rounded-full bg-status-active-subtle px-2 py-0.5 font-semibold font-mono text-[10px] text-status-active">
-                    <BoltIcon />
-                    auto
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-          <span className="font-mono font-semibold text-[11px] text-tertiary">
-            {draft.estimate}
-          </span>
-        </div>
+                  {trait}
+                </span>
+              ))}
+            </span>
+          </div>
+        )}
 
-        <div className="flex items-center justify-between rounded-xl bg-accent-strong px-4 py-3">
-          <button
-            type="button"
-            onClick={startJob}
-            className="flex items-center gap-2 font-bold text-[15px] text-on-accent"
-          >
-            <Play size={16} aria-hidden />
-            {draft.commit}
-            <ChevronDown size={16} aria-hidden />
-          </button>
-          <button
-            type="button"
-            className="flex items-center gap-1.5 font-medium text-[13px] text-on-accent/90 hover:text-on-accent"
-          >
-            <ArrowLeft size={14} aria-hidden />
-            Back to edit
-          </button>
-        </div>
+        {step === 'intake' && (
+          <div className="flex flex-wrap items-baseline justify-center gap-x-4 gap-y-3 rounded-[10px] bg-muted px-4 py-5">
+            {draft.tags.map((tag) => (
+              <button
+                key={tag.name}
+                type="button"
+                aria-pressed={tag.name === jobType}
+                onClick={() => setJobType(tag.name)}
+                className={`flex items-baseline gap-1 rounded-full bg-card px-2.5 py-1 transition-colors hover:text-foreground ${tagWeights[tag.weight]} ${
+                  tag.name === jobType ? 'ring-1 ring-accent-strong' : ''
+                }`}
+              >
+                {tag.name}
+                <span className="font-mono font-normal text-[9px] text-faint">
+                  {tag.count}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {step === 'scoping' && (
+          <>
+            <div className="flex flex-col gap-1.5">
+              <span className={microLabel}>PREREQUISITES</span>
+              <ul className="flex flex-col rounded-xl border border-border">
+                {draft.prereqs.map((prereq) => (
+                  <PrereqRow key={prereq.id} prereq={prereq} />
+                ))}
+              </ul>
+            </div>
+            <button
+              type="button"
+              onClick={() => setStep('confirm')}
+              className="flex items-center gap-1.5 self-end rounded-full bg-accent-strong px-4 py-2 font-semibold text-on-accent text-xs"
+            >
+              Review &amp; start
+              <ArrowRight size={13} aria-hidden />
+            </button>
+          </>
+        )}
+
+        {step === 'confirm' && (
+          <>
+            <div className="flex flex-col gap-1.5">
+              <span className={microLabel}>{draft.paraphraseLabel}</span>
+              <p className="rounded-[10px] bg-muted px-3.5 py-3 text-[14px] text-foreground">
+                {draft.paraphrase}
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2.5 rounded-[10px] bg-accent p-3.5">
+              <span className="font-bold font-mono text-[10px] text-accent-foreground">
+                • COORDINATOR
+              </span>
+              <p className="text-[14px] text-foreground">
+                {draft.coordinator.text}
+              </p>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  className="flex items-center gap-1.5 rounded-md bg-accent-strong px-3.5 py-2 font-semibold text-[13px] text-on-accent"
+                >
+                  <Check size={15} aria-hidden />
+                  {draft.coordinator.accept}
+                </button>
+                <button
+                  type="button"
+                  className="text-accent-foreground text-xs hover:underline"
+                >
+                  {draft.coordinator.reject}
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <div className="flex items-baseline justify-between">
+                <span className={microLabel}>ADDED CONTEXT</span>
+                <button
+                  type="button"
+                  className="flex items-center gap-1 font-semibold text-accent-foreground text-xs"
+                >
+                  <Plus size={13} aria-hidden />
+                  add
+                </button>
+              </div>
+              <ul className="flex flex-col gap-2 rounded-[10px] border border-border p-3">
+                {draft.addedContext.map((item) => {
+                  const Icon = designIcon(item.icon);
+                  return (
+                    <li key={item.label} className="flex items-center gap-2">
+                      <Icon
+                        size={14}
+                        className="shrink-0 text-muted-foreground"
+                        aria-hidden
+                      />
+                      <span
+                        className={`min-w-0 flex-1 truncate text-xs ${
+                          item.accent
+                            ? 'text-accent-foreground'
+                            : 'text-foreground'
+                        }`}
+                      >
+                        {item.label}
+                      </span>
+                      <button
+                        type="button"
+                        aria-label={`Remove ${item.label}`}
+                        className="shrink-0 text-muted-foreground hover:text-foreground"
+                      >
+                        <X size={13} aria-hidden />
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <span className={microLabel}>{draft.ladderLabel}</span>
+              <ul className="flex flex-col rounded-[10px] border border-border">
+                {draft.ladder.map((rung) => {
+                  const Icon = designIcon(rung.icon);
+                  return (
+                    <li
+                      key={rung.name}
+                      className="flex items-center gap-3 border-border border-b px-3.5 py-2.5 last:border-b-0"
+                    >
+                      <Icon
+                        size={16}
+                        className="shrink-0 text-muted-foreground"
+                        aria-hidden
+                      />
+                      <span className="flex-1 font-semibold text-foreground text-sm">
+                        {rung.name}
+                      </span>
+                      <span className="flex items-center gap-1 rounded-full bg-status-active-subtle px-2 py-0.5 font-mono font-semibold text-[10px] text-status-active">
+                        <BoltIcon />
+                        auto
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+              <span className="font-mono font-semibold text-[11px] text-tertiary">
+                {draft.estimate}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between rounded-xl bg-accent-strong px-4 py-3">
+              <button
+                type="button"
+                onClick={startJob}
+                className="flex items-center gap-2 font-bold text-[15px] text-on-accent"
+              >
+                <Play size={16} aria-hidden />
+                {draft.commit}
+                <ChevronDown size={16} aria-hidden />
+              </button>
+              <button
+                type="button"
+                onClick={() => setStep('scoping')}
+                className="flex items-center gap-1.5 font-medium text-[13px] text-on-accent/90 hover:text-on-accent"
+              >
+                <ArrowLeft size={14} aria-hidden />
+                Back to edit
+              </button>
+            </div>
+          </>
+        )}
       </section>
 
       <section className="flex flex-col gap-2 rounded-2xl border border-border bg-conversation p-4">
         <textarea
           aria-label="Describe the job"
-          placeholder={draft.intentPlaceholder}
+          placeholder={draft.intentPlaceholders[step]}
           value={intent}
           onChange={(e) => setIntent(e.target.value)}
           rows={3}
@@ -303,10 +349,14 @@ export function NewJobComposer({ draft }: { draft: NewJobDraft }) {
           </button>
           <button
             type="button"
-            onClick={startJob}
+            onClick={() =>
+              step === 'confirm'
+                ? startJob()
+                : setStep(step === 'intake' ? 'scoping' : 'confirm')
+            }
             className="ml-auto flex items-center gap-1.5 rounded-md bg-accent-strong px-3.5 py-2 font-semibold text-on-accent text-sm"
           >
-            Start
+            {step === 'confirm' ? 'Start' : 'Continue'}
             <ArrowRight size={15} aria-hidden />
           </button>
         </div>

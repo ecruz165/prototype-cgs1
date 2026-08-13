@@ -25,61 +25,86 @@ function renderComposer() {
   );
 }
 
-describe('New Job composer', () => {
-  it('renders the intake journey', async () => {
+describe('New Job composer states', () => {
+  it('starts in the simple intake state: chips, tag cloud, textarea only', async () => {
     renderComposer();
 
     expect(
       await screen.findByRole('heading', { name: 'Start a new job' }),
     ).toBeInTheDocument();
-    expect(screen.getByText('Intake')).toBeInTheDocument();
-    expect(screen.getByText('2 / 3')).toBeInTheDocument();
+    // Intake shows the tag cloud and intent textarea…
+    expect(screen.getByText('56×')).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText(
+        'Describe the job, or pick a job type above…',
+      ),
+    ).toBeInTheDocument();
+    // …and none of the later-state sections.
+    expect(screen.queryByText('PREREQUISITES')).not.toBeInTheDocument();
+    expect(screen.queryByText('RISK')).not.toBeInTheDocument();
+    expect(screen.queryByText(/GATE LADDER/)).not.toBeInTheDocument();
+    expect(screen.queryByText('2 / 3')).not.toBeInTheDocument();
+  });
+
+  it('Continue advances to scoping: prerequisites + risk, no tag cloud', async () => {
+    const user = userEvent.setup();
+    renderComposer();
+
+    await screen.findByRole('heading', { name: 'Start a new job' });
+    await user.click(screen.getByRole('button', { name: /Continue/ }));
+
     expect(screen.getByText('PREREQUISITES')).toBeInTheDocument();
-    expect(screen.getByText('Reproduction steps')).toBeInTheDocument();
-    expect(screen.getByText('needs-you')).toBeInTheDocument();
+    expect(screen.getByText('RISK')).toBeInTheDocument();
+    expect(screen.getByText('2 / 3')).toBeInTheDocument();
+    expect(
+      screen.getByPlaceholderText('Enter the Jira ticket…'),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('56×')).not.toBeInTheDocument();
+  });
+
+  it('Review & start advances to confirm: coordinator, ladder, commit bar', async () => {
+    const user = userEvent.setup();
+    renderComposer();
+
+    await screen.findByRole('heading', { name: 'Start a new job' });
+    await user.click(screen.getByRole('button', { name: /Continue/ }));
+    await user.click(screen.getByRole('button', { name: /Review & start/ }));
+
     expect(screen.getByText(/Routed → bug-fix \(v2\)/)).toBeInTheDocument();
     expect(screen.getByText(/GATE LADDER/)).toBeInTheDocument();
     expect(screen.getByText(/ESTIMATE · ~1 job/)).toBeInTheDocument();
+    expect(screen.getByText('3 / 3')).toBeInTheDocument();
+    expect(screen.queryByText('PREREQUISITES')).not.toBeInTheDocument();
+
+    // Back to edit returns to scoping.
+    await user.click(screen.getByRole('button', { name: /Back to edit/ }));
+    expect(screen.getByText('PREREQUISITES')).toBeInTheDocument();
   });
 
-  it('toggles the scale selector', async () => {
+  it('Start job from confirm lands on the jobs list', async () => {
     const user = userEvent.setup();
     renderComposer();
 
     await screen.findByRole('heading', { name: 'Start a new job' });
-    const small = screen.getByRole('button', { name: 'S' });
-    const medium = screen.getByRole('button', { name: 'M' });
-    expect(small).toHaveAttribute('aria-pressed', 'true');
-
-    await user.click(medium);
-    expect(medium).toHaveAttribute('aria-pressed', 'true');
-    expect(small).toHaveAttribute('aria-pressed', 'false');
-  });
-
-  it('picking a tag selects that job type', async () => {
-    const user = userEvent.setup();
-    renderComposer();
-
-    await screen.findByRole('heading', { name: 'Start a new job' });
-    await user.click(
-      screen.getByRole('button', { name: /implement-feature-v3/ }),
-    );
-    // The selection also relabels the job-type chip, so match the tag by
-    // its pressed state.
-    const pressed = screen
-      .getAllByRole('button', { name: /implement-feature-v3/ })
-      .find((b) => b.getAttribute('aria-pressed') === 'true');
-    expect(pressed).toBeTruthy();
-  });
-
-  it('starting the job lands on the jobs list', async () => {
-    const user = userEvent.setup();
-    renderComposer();
-
-    await screen.findByRole('heading', { name: 'Start a new job' });
+    await user.click(screen.getByRole('button', { name: /Continue/ }));
+    await user.click(screen.getByRole('button', { name: /Review & start/ }));
     await user.click(screen.getByRole('button', { name: /Start job/ }));
+
     expect(
       await screen.findByRole('heading', { name: 'Jobs' }),
     ).toBeInTheDocument();
+  });
+
+  it('keeps the scale selector across states', async () => {
+    const user = userEvent.setup();
+    renderComposer();
+
+    await screen.findByRole('heading', { name: 'Start a new job' });
+    await user.click(screen.getByRole('button', { name: 'M' }));
+    await user.click(screen.getByRole('button', { name: /Continue/ }));
+    expect(screen.getByRole('button', { name: 'M' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
   });
 });

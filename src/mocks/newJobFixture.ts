@@ -84,7 +84,11 @@ export const newJobDraft: NewJobDraft = {
   estimate:
     'ESTIMATE · ~1 job · ~2 pts · ~$0.05 · ~4 min   (Small · band 1–2 · mid model)',
   commit: 'Start job',
-  intentPlaceholder: 'Describe the job, or pick a job type above…',
+  intentPlaceholders: {
+    intake: 'Describe the job, or pick a job type above…',
+    scoping: 'Enter the Jira ticket…',
+    confirm: 'Add a note or refine before you start…',
+  },
   attachments: [
     { icon: 'attach_file', label: 'auth-spec.md' },
     { icon: 'link', label: 'github.com/skoolscout/platform/issues/142' },

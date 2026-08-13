@@ -47,7 +47,11 @@ export const NewJobDraftSchema = z.object({
   ladder: z.object({ icon: z.string(), name: z.string() }).array(),
   estimate: z.string(),
   commit: z.string(),
-  intentPlaceholder: z.string(),
+  intentPlaceholders: z.object({
+    intake: z.string(),
+    scoping: z.string(),
+    confirm: z.string(),
+  }),
   attachments: z.object({ icon: z.string(), label: z.string() }).array(),
 });
 export type NewJobDraft = z.infer<typeof NewJobDraftSchema>;

@@ -38,7 +38,9 @@ describe('Workbench pages', () => {
 
     await user.click(screen.getByRole('button', { name: 'PRDs' }));
     expect(screen.getByText('PRD LIBRARY')).toBeInTheDocument();
-    expect(screen.getAllByText('Fractional orders v2').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Fractional orders v2').length).toBeGreaterThan(
+      0,
+    );
 
     await user.click(screen.getByRole('button', { name: 'Readiness' }));
     expect(
