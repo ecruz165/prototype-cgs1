@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { JobFlowSchema } from '@/schemas/flow';
 import { JobSchema } from '@/schemas/job';
 import { NodeDetailSchema } from '@/schemas/nodeDetail';
+import { JobSteeringSchema, SteeringDetailSchema } from '@/schemas/steering';
 
 describe('jobs handler contract', () => {
   it('serves jobs that satisfy JobSchema', async () => {
@@ -36,6 +37,30 @@ describe('jobs handler contract', () => {
     expect(minimal.input).toBeNull();
 
     const missing = await fetch('/api/jobs/job_8af21c/flow/nope');
+    expect(missing.status).toBe(404);
+  });
+
+  it('serves steering data and request details', async () => {
+    const steering = JobSteeringSchema.parse(
+      await (await fetch('/api/jobs/job_8af21c/steering')).json(),
+    );
+    expect(steering.requests).toHaveLength(6);
+    expect(steering.team).toHaveLength(5);
+
+    const rich = SteeringDetailSchema.parse(
+      await (await fetch('/api/jobs/job_8af21c/steering/approve-merge')).json(),
+    );
+    expect(rich.actionZone).not.toBeNull();
+    expect(rich.deliberation?.votes.approve).toBe(4);
+
+    const minimal = SteeringDetailSchema.parse(
+      await (
+        await fetch('/api/jobs/job_8af21c/steering/security-review')
+      ).json(),
+    );
+    expect(minimal.actionZone).toBeNull();
+
+    const missing = await fetch('/api/jobs/job_8af21c/steering/nope');
     expect(missing.status).toBe(404);
   });
 });

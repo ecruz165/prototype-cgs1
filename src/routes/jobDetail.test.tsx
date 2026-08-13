@@ -97,10 +97,10 @@ describe('Job detail with ActivityRail', () => {
     });
     expect(rail).toBeInTheDocument();
 
-    await user.click(screen.getByRole('link', { name: 'Steering' }));
+    await user.click(screen.getByRole('link', { name: 'Output' }));
     expect(await screen.findByText('Pane not built yet')).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Steering' }),
+      screen.getByRole('heading', { name: 'Output' }),
     ).toBeInTheDocument();
   });
 

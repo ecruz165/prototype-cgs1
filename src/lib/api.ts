@@ -1,6 +1,12 @@
 import { type JobFlow, JobFlowSchema } from '@/schemas/flow';
 import { type Job, JobSchema } from '@/schemas/job';
 import { type NodeDetail, NodeDetailSchema } from '@/schemas/nodeDetail';
+import {
+  type JobSteering,
+  JobSteeringSchema,
+  type SteeringDetail,
+  SteeringDetailSchema,
+} from '@/schemas/steering';
 
 // Zod at the network boundary: malformed payloads become Query errors
 // instead of bad renders.
@@ -31,4 +37,27 @@ export async function fetchNodeDetail(
     );
   }
   return NodeDetailSchema.parse(await response.json());
+}
+
+export async function fetchJobSteering(jobId: string): Promise<JobSteering> {
+  const response = await fetch(`/api/jobs/${jobId}/steering`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/steering failed: ${response.status}`,
+    );
+  }
+  return JobSteeringSchema.parse(await response.json());
+}
+
+export async function fetchSteeringDetail(
+  jobId: string,
+  requestId: string,
+): Promise<SteeringDetail> {
+  const response = await fetch(`/api/jobs/${jobId}/steering/${requestId}`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/steering/${requestId} failed: ${response.status}`,
+    );
+  }
+  return SteeringDetailSchema.parse(await response.json());
 }

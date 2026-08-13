@@ -1,5 +1,5 @@
-import { ChevronDown, ChevronRight, Ticket } from 'lucide-react';
-import { useState } from 'react';
+import { Ticket } from 'lucide-react';
+import { PaneWindow } from '@/components/molecules/PaneWindow';
 import { designIcon } from '@/lib/designIcons';
 import type { FlowPhase, JobFlow } from '@/schemas/flow';
 
@@ -28,8 +28,6 @@ interface FlowPaneProps {
 // The design's pane-flow: phases as a spine (connector turns accent once a
 // phase completes), fork children indented, selection feeds the canvas.
 export function FlowPane({ flow, selectedId, onSelect }: FlowPaneProps) {
-  const [open, setOpen] = useState(true);
-  const Chevron = open ? ChevronDown : ChevronRight;
   const statusWord = flow.phases.some((p) => p.status === 'running')
     ? 'running'
     : 'idle';
@@ -45,35 +43,26 @@ export function FlowPane({ flow, selectedId, onSelect }: FlowPaneProps) {
           {flow.ticket} · {flow.flow}
         </span>
       </span>
-      <section className="rounded-md border border-border bg-card">
-        <button
-          type="button"
-          aria-expanded={open}
-          onClick={() => setOpen((o) => !o)}
-          className="flex h-[34px] w-full items-center gap-2 px-3"
-        >
-          <Chevron size={16} className="text-tertiary" aria-hidden />
-          <span className="font-mono font-semibold text-[11px] text-foreground">
-            PIPELINE
-          </span>
-          <span className="ml-auto font-mono font-semibold text-[10px] text-accent-foreground">
+      <PaneWindow
+        label="PIPELINE"
+        count={
+          <span className="font-mono font-semibold text-[10px] text-accent-foreground">
             {statusWord} · {flow.phases.length} phases
           </span>
-        </button>
-        {open && (
-          <ul className="flex flex-col border-border border-t p-1.5">
-            {flow.phases.map((phase, index) => (
-              <PhaseNode
-                key={phase.id}
-                phase={phase}
-                last={index === flow.phases.length - 1}
-                selected={phase.id === selectedId}
-                onSelect={() => onSelect(phase.id)}
-              />
-            ))}
-          </ul>
-        )}
-      </section>
+        }
+      >
+        <ul className="flex flex-col p-1.5">
+          {flow.phases.map((phase, index) => (
+            <PhaseNode
+              key={phase.id}
+              phase={phase}
+              last={index === flow.phases.length - 1}
+              selected={phase.id === selectedId}
+              onSelect={() => onSelect(phase.id)}
+            />
+          ))}
+        </ul>
+      </PaneWindow>
     </div>
   );
 }

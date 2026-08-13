@@ -2,6 +2,7 @@ import { delay, HttpResponse, http } from 'msw';
 import { jobs } from './fixtures';
 import { jobFlow } from './flowFixture';
 import { nodeDetailFor } from './nodeDetailFixture';
+import { jobSteering, steeringDetailFor } from './steeringFixture';
 
 export const handlers = [
   http.get('/api/jobs', async () => {
@@ -26,6 +27,25 @@ export const handlers = [
         : undefined;
     if (!detail) {
       return HttpResponse.json({ message: 'unknown node' }, { status: 404 });
+    }
+    return HttpResponse.json(detail);
+  }),
+  http.get('/api/jobs/:jobId/steering', async ({ params }) => {
+    await delay(250);
+    if (!jobs.some((job) => job.id === params.jobId)) {
+      return HttpResponse.json({ message: 'unknown job' }, { status: 404 });
+    }
+    return HttpResponse.json(jobSteering);
+  }),
+  http.get('/api/jobs/:jobId/steering/:requestId', async ({ params }) => {
+    await delay(200);
+    const detail =
+      jobs.some((job) => job.id === params.jobId) &&
+      typeof params.requestId === 'string'
+        ? steeringDetailFor(params.requestId)
+        : undefined;
+    if (!detail) {
+      return HttpResponse.json({ message: 'unknown request' }, { status: 404 });
     }
     return HttpResponse.json(detail);
   }),

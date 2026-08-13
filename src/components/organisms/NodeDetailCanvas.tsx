@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
+import { CrossLink } from '@/components/molecules/CrossLink';
 import { designIcon } from '@/lib/designIcons';
 import type { NodeDetail } from '@/schemas/nodeDetail';
 
@@ -128,35 +129,9 @@ export function NodeDetailCanvas({
           {detail.crossLinks.length > 0 && (
             <>
               <span className={sectionLabelClass}>CROSS-LINKS</span>
-              {detail.crossLinks.map((link) => {
-                const Icon = designIcon(link.icon);
-                return (
-                  <Link
-                    key={link.title}
-                    to="/jobs/$jobId/$section"
-                    params={{ jobId, section: link.target }}
-                    className="flex items-center gap-2.5 rounded-sm border border-border bg-muted px-3 py-2.5 transition-colors hover:border-accent-strong"
-                  >
-                    <Icon
-                      size={16}
-                      className="shrink-0 text-accent-strong"
-                      aria-hidden
-                    />
-                    <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                      <span className="truncate font-semibold text-foreground text-xs">
-                        {link.title}
-                      </span>
-                      <span className="truncate font-mono text-[10px] text-tertiary">
-                        {link.sub}
-                      </span>
-                    </span>
-                    <span className="flex shrink-0 items-center gap-1 font-mono font-semibold text-[10px] text-accent-foreground">
-                      {link.targetLabel}
-                      <ArrowRight size={14} aria-hidden />
-                    </span>
-                  </Link>
-                );
-              })}
+              {detail.crossLinks.map((link) => (
+                <CrossLink key={link.title} jobId={jobId} {...link} />
+              ))}
             </>
           )}
           {!detail.input && !detail.agent && detail.crossLinks.length === 0 && (

@@ -1,11 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { ActivityRail } from '@/components/organisms/ActivityRail';
-import { FlowPane } from '@/components/organisms/FlowPane';
-import { NodeDetailCanvas } from '@/components/organisms/NodeDetailCanvas';
-import { fetchJobFlow, fetchNodeDetail } from '@/lib/api';
+import { FlowSection } from '@/components/organisms/FlowSection';
+import { SteeringSection } from '@/components/organisms/SteeringSection';
 import { isJobSection, jobSections } from '@/lib/jobSections';
 
 export const Route = createFileRoute('/jobs_/$jobId/$section')({
@@ -24,93 +22,17 @@ function JobDetailPage() {
   const { jobId, section: sectionSlug } = Route.useParams();
   const section = jobSections.find((s) => s.slug === sectionSlug);
   const [paneOpen, setPaneOpen] = useState(true);
-  const [selectedPhase, setSelectedPhase] = useState<string>();
-
-  const isFlow = sectionSlug === 'flow';
-  const flowQuery = useQuery({
-    queryKey: ['job-flow', jobId],
-    queryFn: () => fetchJobFlow(jobId),
-    enabled: isFlow,
-  });
-  const flow = flowQuery.data;
-  // The design selects the running agent phase ("Generate patch") at rest.
-  const selectedId =
-    selectedPhase ??
-    flow?.phases.find((p) => p.status === 'running' && p.kind === 'agent')?.id;
-
-  const detailQuery = useQuery({
-    queryKey: ['node-detail', jobId, selectedId],
-    queryFn: () => fetchNodeDetail(jobId, selectedId ?? ''),
-    enabled: isFlow && Boolean(selectedId),
-  });
 
   if (!section) return null;
 
   return (
     <div className="flex h-full min-h-0">
-      <main className="min-w-0 flex-1 overflow-y-auto p-5">
-        {isFlow ? (
-          detailQuery.data ? (
-            <NodeDetailCanvas jobId={jobId} detail={detailQuery.data} />
-          ) : (
-            <p className="py-16 text-center text-muted-foreground text-sm">
-              {detailQuery.isError
-                ? "Couldn't load the node detail."
-                : 'Loading node detail…'}
-            </p>
-          )
-        ) : (
-          <>
-            <Link
-              to="/jobs"
-              className="mb-4 flex w-fit items-center gap-1.5 text-muted-foreground text-xs transition-colors hover:text-foreground"
-            >
-              <ArrowLeft size={14} aria-hidden />
-              Jobs
-            </Link>
-            <div className="flex h-[70%] items-center justify-center">
-              <div className="rounded-lg border border-border border-dashed bg-card px-10 py-8 text-center">
-                <h1 className="font-semibold text-foreground text-lg">
-                  {section.label}
-                </h1>
-                <p className="mt-1 text-muted-foreground text-sm">
-                  Canvas not built yet
-                </p>
-              </div>
-            </div>
-          </>
-        )}
-      </main>
-      {paneOpen && (
-        <aside
-          aria-label={`${section.label} pane`}
-          className="w-68 shrink-0 overflow-y-auto border-border border-l p-3.5"
-        >
-          {isFlow ? (
-            flowQuery.isPending ? (
-              <p className="text-muted-foreground text-xs">Loading flow…</p>
-            ) : flowQuery.isError ? (
-              <p className="text-status-danger text-xs">
-                Couldn't load the flow.
-              </p>
-            ) : flow ? (
-              <FlowPane
-                flow={flow}
-                selectedId={selectedId}
-                onSelect={setSelectedPhase}
-              />
-            ) : null
-          ) : (
-            <div className="flex flex-col gap-3.5">
-              <span className="font-mono font-semibold text-[10px] text-tertiary uppercase">
-                {section.label}
-              </span>
-              <p className="text-muted-foreground text-xs">
-                Pane not built yet
-              </p>
-            </div>
-          )}
-        </aside>
+      {sectionSlug === 'flow' ? (
+        <FlowSection jobId={jobId} paneOpen={paneOpen} />
+      ) : sectionSlug === 'steering' ? (
+        <SteeringSection jobId={jobId} paneOpen={paneOpen} />
+      ) : (
+        <PlaceholderSection label={section.label} paneOpen={paneOpen} />
       )}
       <ActivityRail
         jobId={jobId}
@@ -119,5 +41,48 @@ function JobDetailPage() {
         onTogglePane={() => setPaneOpen((o) => !o)}
       />
     </div>
+  );
+}
+
+function PlaceholderSection({
+  label,
+  paneOpen,
+}: {
+  label: string;
+  paneOpen: boolean;
+}) {
+  return (
+    <>
+      <main className="min-w-0 flex-1 overflow-y-auto p-5">
+        <Link
+          to="/jobs"
+          className="mb-4 flex w-fit items-center gap-1.5 text-muted-foreground text-xs transition-colors hover:text-foreground"
+        >
+          <ArrowLeft size={14} aria-hidden />
+          Jobs
+        </Link>
+        <div className="flex h-[70%] items-center justify-center">
+          <div className="rounded-lg border border-border border-dashed bg-card px-10 py-8 text-center">
+            <h1 className="font-semibold text-foreground text-lg">{label}</h1>
+            <p className="mt-1 text-muted-foreground text-sm">
+              Canvas not built yet
+            </p>
+          </div>
+        </div>
+      </main>
+      {paneOpen && (
+        <aside
+          aria-label={`${label} pane`}
+          className="w-68 shrink-0 overflow-y-auto border-border border-l p-3.5"
+        >
+          <div className="flex flex-col gap-3.5">
+            <span className="font-mono font-semibold text-[10px] text-tertiary uppercase">
+              {label}
+            </span>
+            <p className="text-muted-foreground text-xs">Pane not built yet</p>
+          </div>
+        </aside>
+      )}
+    </>
   );
 }
