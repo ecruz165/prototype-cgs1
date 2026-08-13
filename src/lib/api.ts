@@ -18,6 +18,7 @@ import {
 } from '@/schemas/context';
 import { type JobFlow, JobFlowSchema } from '@/schemas/flow';
 import { type Job, JobSchema } from '@/schemas/job';
+import { type NewJobDraft, NewJobDraftSchema } from '@/schemas/newJob';
 import { type NodeDetail, NodeDetailSchema } from '@/schemas/nodeDetail';
 import {
   type Notifications,
@@ -246,4 +247,12 @@ export async function fetchNotifications(): Promise<Notifications> {
     throw new Error(`GET /api/notifications failed: ${response.status}`);
   }
   return NotificationsSchema.parse(await response.json());
+}
+
+export async function fetchNewJobDraft(): Promise<NewJobDraft> {
+  const response = await fetch('/api/new-job');
+  if (!response.ok) {
+    throw new Error(`GET /api/new-job failed: ${response.status}`);
+  }
+  return NewJobDraftSchema.parse(await response.json());
 }

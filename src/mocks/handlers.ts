@@ -4,6 +4,7 @@ import { haltDetailFor, jobBudget } from './budgetFixture';
 import { jobContext, queryDetailFor } from './contextFixture';
 import { jobs } from './fixtures';
 import { jobFlow } from './flowFixture';
+import { newJobDraft } from './newJobFixture';
 import { nodeDetailFor } from './nodeDetailFixture';
 import { notifications } from './notificationsFixture';
 import { fileDiffFor, jobOutput } from './outputFixture';
@@ -12,6 +13,10 @@ import { gateDetailFor, jobQuality } from './qualityFixture';
 import { jobSteering, steeringDetailFor } from './steeringFixture';
 
 export const handlers = [
+  http.get('/api/new-job', async () => {
+    await delay(200);
+    return HttpResponse.json(newJobDraft);
+  }),
   http.get('/api/notifications', async () => {
     await delay(200);
     return HttpResponse.json(notifications);
