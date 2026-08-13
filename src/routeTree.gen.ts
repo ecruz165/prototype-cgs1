@@ -10,121 +10,154 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DemosRouteRouteImport } from './routes/demos/route'
-import { Route as UsersRouteImport } from './routes/users'
-import { Route as DemosIndexRouteImport } from './routes/demos/index'
-import { Route as DemosEditorRouteImport } from './routes/demos/editor'
-import { Route as DemosFlowRouteImport } from './routes/demos/flow'
-import { Route as DemosFormRouteImport } from './routes/demos/form'
-import { Route as DemosMarkdownRouteImport } from './routes/demos/markdown'
+import { Route as BenchmarksRouteImport } from './routes/benchmarks'
+import { Route as JobsRouteImport } from './routes/jobs'
+import { Route as ManageRouteImport } from './routes/manage'
+import { Route as NewJobRouteImport } from './routes/new-job'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as WorkspaceBuildRouteImport } from './routes/workspace/build'
+import { Route as WorkspacePlanRouteImport } from './routes/workspace/plan'
+import { Route as WorkspaceRunRouteImport } from './routes/workspace/run'
+import { Route as WorkspaceValidateRouteImport } from './routes/workspace/validate'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemosRouteRoute = DemosRouteRouteImport.update({
-  id: '/demos',
-  path: '/demos',
+const BenchmarksRoute = BenchmarksRouteImport.update({
+  id: '/benchmarks',
+  path: '/benchmarks',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UsersRoute = UsersRouteImport.update({
-  id: '/users',
-  path: '/users',
+const JobsRoute = JobsRouteImport.update({
+  id: '/jobs',
+  path: '/jobs',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemosIndexRoute = DemosIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DemosRouteRoute,
+const ManageRoute = ManageRouteImport.update({
+  id: '/manage',
+  path: '/manage',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DemosEditorRoute = DemosEditorRouteImport.update({
-  id: '/editor',
-  path: '/editor',
-  getParentRoute: () => DemosRouteRoute,
+const NewJobRoute = NewJobRouteImport.update({
+  id: '/new-job',
+  path: '/new-job',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DemosFlowRoute = DemosFlowRouteImport.update({
-  id: '/flow',
-  path: '/flow',
-  getParentRoute: () => DemosRouteRoute,
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DemosFormRoute = DemosFormRouteImport.update({
-  id: '/form',
-  path: '/form',
-  getParentRoute: () => DemosRouteRoute,
+const WorkspaceBuildRoute = WorkspaceBuildRouteImport.update({
+  id: '/workspace/build',
+  path: '/workspace/build',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DemosMarkdownRoute = DemosMarkdownRouteImport.update({
-  id: '/markdown',
-  path: '/markdown',
-  getParentRoute: () => DemosRouteRoute,
+const WorkspacePlanRoute = WorkspacePlanRouteImport.update({
+  id: '/workspace/plan',
+  path: '/workspace/plan',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkspaceRunRoute = WorkspaceRunRouteImport.update({
+  id: '/workspace/run',
+  path: '/workspace/run',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkspaceValidateRoute = WorkspaceValidateRouteImport.update({
+  id: '/workspace/validate',
+  path: '/workspace/validate',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demos': typeof DemosRouteRouteWithChildren
-  '/users': typeof UsersRoute
-  '/demos/editor': typeof DemosEditorRoute
-  '/demos/flow': typeof DemosFlowRoute
-  '/demos/form': typeof DemosFormRoute
-  '/demos/markdown': typeof DemosMarkdownRoute
-  '/demos/': typeof DemosIndexRoute
+  '/benchmarks': typeof BenchmarksRoute
+  '/jobs': typeof JobsRoute
+  '/manage': typeof ManageRoute
+  '/new-job': typeof NewJobRoute
+  '/settings': typeof SettingsRoute
+  '/workspace/build': typeof WorkspaceBuildRoute
+  '/workspace/plan': typeof WorkspacePlanRoute
+  '/workspace/run': typeof WorkspaceRunRoute
+  '/workspace/validate': typeof WorkspaceValidateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/users': typeof UsersRoute
-  '/demos/editor': typeof DemosEditorRoute
-  '/demos/flow': typeof DemosFlowRoute
-  '/demos/form': typeof DemosFormRoute
-  '/demos/markdown': typeof DemosMarkdownRoute
-  '/demos': typeof DemosIndexRoute
+  '/benchmarks': typeof BenchmarksRoute
+  '/jobs': typeof JobsRoute
+  '/manage': typeof ManageRoute
+  '/new-job': typeof NewJobRoute
+  '/settings': typeof SettingsRoute
+  '/workspace/build': typeof WorkspaceBuildRoute
+  '/workspace/plan': typeof WorkspacePlanRoute
+  '/workspace/run': typeof WorkspaceRunRoute
+  '/workspace/validate': typeof WorkspaceValidateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demos': typeof DemosRouteRouteWithChildren
-  '/users': typeof UsersRoute
-  '/demos/editor': typeof DemosEditorRoute
-  '/demos/flow': typeof DemosFlowRoute
-  '/demos/form': typeof DemosFormRoute
-  '/demos/markdown': typeof DemosMarkdownRoute
-  '/demos/': typeof DemosIndexRoute
+  '/benchmarks': typeof BenchmarksRoute
+  '/jobs': typeof JobsRoute
+  '/manage': typeof ManageRoute
+  '/new-job': typeof NewJobRoute
+  '/settings': typeof SettingsRoute
+  '/workspace/build': typeof WorkspaceBuildRoute
+  '/workspace/plan': typeof WorkspacePlanRoute
+  '/workspace/run': typeof WorkspaceRunRoute
+  '/workspace/validate': typeof WorkspaceValidateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/demos'
-    | '/users'
-    | '/demos/editor'
-    | '/demos/flow'
-    | '/demos/form'
-    | '/demos/markdown'
-    | '/demos/'
+    | '/benchmarks'
+    | '/jobs'
+    | '/manage'
+    | '/new-job'
+    | '/settings'
+    | '/workspace/build'
+    | '/workspace/plan'
+    | '/workspace/run'
+    | '/workspace/validate'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/users'
-    | '/demos/editor'
-    | '/demos/flow'
-    | '/demos/form'
-    | '/demos/markdown'
-    | '/demos'
+    | '/benchmarks'
+    | '/jobs'
+    | '/manage'
+    | '/new-job'
+    | '/settings'
+    | '/workspace/build'
+    | '/workspace/plan'
+    | '/workspace/run'
+    | '/workspace/validate'
   id:
     | '__root__'
     | '/'
-    | '/demos'
-    | '/users'
-    | '/demos/editor'
-    | '/demos/flow'
-    | '/demos/form'
-    | '/demos/markdown'
-    | '/demos/'
+    | '/benchmarks'
+    | '/jobs'
+    | '/manage'
+    | '/new-job'
+    | '/settings'
+    | '/workspace/build'
+    | '/workspace/plan'
+    | '/workspace/run'
+    | '/workspace/validate'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemosRouteRoute: typeof DemosRouteRouteWithChildren
-  UsersRoute: typeof UsersRoute
+  BenchmarksRoute: typeof BenchmarksRoute
+  JobsRoute: typeof JobsRoute
+  ManageRoute: typeof ManageRoute
+  NewJobRoute: typeof NewJobRoute
+  SettingsRoute: typeof SettingsRoute
+  WorkspaceBuildRoute: typeof WorkspaceBuildRoute
+  WorkspacePlanRoute: typeof WorkspacePlanRoute
+  WorkspaceRunRoute: typeof WorkspaceRunRoute
+  WorkspaceValidateRoute: typeof WorkspaceValidateRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -136,82 +169,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demos': {
-      id: '/demos'
-      path: '/demos'
-      fullPath: '/demos'
-      preLoaderRoute: typeof DemosRouteRouteImport
+    '/benchmarks': {
+      id: '/benchmarks'
+      path: '/benchmarks'
+      fullPath: '/benchmarks'
+      preLoaderRoute: typeof BenchmarksRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/users': {
-      id: '/users'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof UsersRouteImport
+    '/jobs': {
+      id: '/jobs'
+      path: '/jobs'
+      fullPath: '/jobs'
+      preLoaderRoute: typeof JobsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demos/': {
-      id: '/demos/'
-      path: '/'
-      fullPath: '/demos/'
-      preLoaderRoute: typeof DemosIndexRouteImport
-      parentRoute: typeof DemosRouteRoute
+    '/manage': {
+      id: '/manage'
+      path: '/manage'
+      fullPath: '/manage'
+      preLoaderRoute: typeof ManageRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/demos/editor': {
-      id: '/demos/editor'
-      path: '/editor'
-      fullPath: '/demos/editor'
-      preLoaderRoute: typeof DemosEditorRouteImport
-      parentRoute: typeof DemosRouteRoute
+    '/new-job': {
+      id: '/new-job'
+      path: '/new-job'
+      fullPath: '/new-job'
+      preLoaderRoute: typeof NewJobRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/demos/flow': {
-      id: '/demos/flow'
-      path: '/flow'
-      fullPath: '/demos/flow'
-      preLoaderRoute: typeof DemosFlowRouteImport
-      parentRoute: typeof DemosRouteRoute
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/demos/form': {
-      id: '/demos/form'
-      path: '/form'
-      fullPath: '/demos/form'
-      preLoaderRoute: typeof DemosFormRouteImport
-      parentRoute: typeof DemosRouteRoute
+    '/workspace/build': {
+      id: '/workspace/build'
+      path: '/workspace/build'
+      fullPath: '/workspace/build'
+      preLoaderRoute: typeof WorkspaceBuildRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/demos/markdown': {
-      id: '/demos/markdown'
-      path: '/markdown'
-      fullPath: '/demos/markdown'
-      preLoaderRoute: typeof DemosMarkdownRouteImport
-      parentRoute: typeof DemosRouteRoute
+    '/workspace/plan': {
+      id: '/workspace/plan'
+      path: '/workspace/plan'
+      fullPath: '/workspace/plan'
+      preLoaderRoute: typeof WorkspacePlanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/run': {
+      id: '/workspace/run'
+      path: '/workspace/run'
+      fullPath: '/workspace/run'
+      preLoaderRoute: typeof WorkspaceRunRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/workspace/validate': {
+      id: '/workspace/validate'
+      path: '/workspace/validate'
+      fullPath: '/workspace/validate'
+      preLoaderRoute: typeof WorkspaceValidateRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface DemosRouteRouteChildren {
-  DemosEditorRoute: typeof DemosEditorRoute
-  DemosFlowRoute: typeof DemosFlowRoute
-  DemosFormRoute: typeof DemosFormRoute
-  DemosMarkdownRoute: typeof DemosMarkdownRoute
-  DemosIndexRoute: typeof DemosIndexRoute
-}
-
-const DemosRouteRouteChildren: DemosRouteRouteChildren = {
-  DemosEditorRoute: DemosEditorRoute,
-  DemosFlowRoute: DemosFlowRoute,
-  DemosFormRoute: DemosFormRoute,
-  DemosMarkdownRoute: DemosMarkdownRoute,
-  DemosIndexRoute: DemosIndexRoute,
-}
-
-const DemosRouteRouteWithChildren = DemosRouteRoute._addFileChildren(
-  DemosRouteRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemosRouteRoute: DemosRouteRouteWithChildren,
-  UsersRoute: UsersRoute,
+  BenchmarksRoute: BenchmarksRoute,
+  JobsRoute: JobsRoute,
+  ManageRoute: ManageRoute,
+  NewJobRoute: NewJobRoute,
+  SettingsRoute: SettingsRoute,
+  WorkspaceBuildRoute: WorkspaceBuildRoute,
+  WorkspacePlanRoute: WorkspacePlanRoute,
+  WorkspaceRunRoute: WorkspaceRunRoute,
+  WorkspaceValidateRoute: WorkspaceValidateRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

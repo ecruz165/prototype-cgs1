@@ -22,7 +22,7 @@ function RootLayout() {
       {/* Alert count is the design's mock value until notifications exist. */}
       <AppTopBar navOpen={navOpen} onToggleNav={toggleNav} alertCount={7} />
       <div className="flex min-h-0 flex-1">
-        {navOpen && <NavDrawer onClose={toggleNav} />}
+        {navOpen && <NavDrawer />}
         <div className="min-w-0 flex-1 overflow-y-auto">
           <Outlet />
         </div>

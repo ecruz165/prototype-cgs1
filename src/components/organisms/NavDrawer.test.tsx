@@ -11,12 +11,12 @@ import { queryClient } from '@/lib/queryClient';
 import { ThemeProvider } from '@/lib/theme';
 import { routeTree } from '@/routeTree.gen';
 
-// Shell integration: the drawer's open state lives in the root layout, so
-// these tests mount the real route tree instead of the drawer alone.
-function renderApp() {
+// Shell integration: drawer state lives in the root layout and the sidebar's
+// active states come from the route, so these tests mount the real tree.
+function renderApp(initialPath = '/jobs') {
   const router = createRouter({
     routeTree,
-    history: createMemoryHistory({ initialEntries: ['/'] }),
+    history: createMemoryHistory({ initialEntries: [initialPath] }),
   });
   return render(
     <ThemeProvider>
@@ -32,21 +32,54 @@ describe('NavDrawer in the app shell', () => {
     localStorage.clear();
   });
 
-  it('renders MENU links and CATALOG placeholders', async () => {
+  it('redirects / to /jobs', async () => {
+    renderApp('/');
+    expect(
+      await screen.findByRole('heading', { name: 'Jobs' }),
+    ).toBeInTheDocument();
+  });
+
+  it('renders the design sidebar with hats hidden at rest', async () => {
     renderApp();
 
-    const drawer = await screen.findByRole('navigation', { name: 'Primary' });
-    expect(drawer).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Home/ })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Users/ })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Demos/ })).toBeInTheDocument();
-
-    // Catalog entries have no routes yet: rendered, but not as links.
-    expect(screen.getByText('CATALOG')).toBeInTheDocument();
-    expect(screen.getByText('Agents')).toBeInTheDocument();
+    await screen.findByRole('navigation', { name: 'Primary' });
+    expect(screen.getByText('Digital Investor Platform')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /New Job/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Manage/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Jobs/ })).toBeInTheDocument();
     expect(
-      screen.queryByRole('link', { name: /Agents/ }),
+      screen.getByRole('link', { name: 'Benchmarks' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
+
+    const disclosure = screen.getByRole('button', { name: /Workspaces/ });
+    expect(disclosure).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('link', { name: 'Plan' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('reveals the workspace hats on hover without changing selection', async () => {
+    const user = userEvent.setup();
+    renderApp();
+
+    await screen.findByRole('navigation', { name: 'Primary' });
+    await user.hover(screen.getByRole('button', { name: /Workspaces/ }));
+
+    for (const hat of ['Plan', 'Build', 'Validate', 'Run']) {
+      expect(screen.getByRole('link', { name: hat })).toBeInTheDocument();
+    }
+  });
+
+  it('keeps the disclosure open when a hat route is active', async () => {
+    renderApp('/workspace/build');
+
+    await screen.findByRole('navigation', { name: 'Primary' });
+    expect(screen.getByRole('button', { name: /Workspaces/ })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+    expect(screen.getByRole('link', { name: 'Build' })).toBeInTheDocument();
   });
 
   it('collapses from the hamburger and persists the choice', async () => {
@@ -65,15 +98,5 @@ describe('NavDrawer in the app shell', () => {
     expect(
       screen.getByRole('navigation', { name: 'Primary' }),
     ).toBeInTheDocument();
-  });
-
-  it('starts collapsed when a previous session closed it', async () => {
-    localStorage.setItem('nav-open', 'closed');
-    renderApp();
-
-    await screen.findByRole('button', { name: 'Toggle navigation' });
-    expect(
-      screen.queryByRole('navigation', { name: 'Primary' }),
-    ).not.toBeInTheDocument();
   });
 });

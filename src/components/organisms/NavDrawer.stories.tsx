@@ -5,7 +5,6 @@ import {
   createRouter,
   RouterProvider,
 } from '@tanstack/react-router';
-import { fn } from 'storybook/test';
 import { ThemeProvider } from '@/lib/theme';
 import { NavDrawer } from './NavDrawer';
 
@@ -31,7 +30,6 @@ const meta = {
       return <RouterProvider router={router} />;
     },
   ],
-  args: { onClose: fn() },
 } satisfies Meta<typeof NavDrawer>;
 
 export default meta;

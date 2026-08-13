@@ -40,5 +40,5 @@ export const Active: Story = {
 // Points at a path the story router doesn't have (expected dev warning), so
 // the tab renders its inactive state.
 export const Inactive: Story = {
-  args: { to: '/users', label: 'Tasks' },
+  args: { to: '/manage', label: 'Tasks' },
 };

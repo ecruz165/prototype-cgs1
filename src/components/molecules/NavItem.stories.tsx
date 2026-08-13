@@ -5,10 +5,13 @@ import {
   createRouter,
   RouterProvider,
 } from '@tanstack/react-router';
-import { House } from 'lucide-react';
+import { ChartPie, CirclePlus, Construction } from 'lucide-react';
 import { ThemeProvider } from '@/lib/theme';
-import { NavItem, NavItemPlaceholder } from './NavItem';
+import { NavItem } from './NavItem';
 
+// Link needs a router in context; a throwaway memory-history router whose
+// root route renders the story does the job. The dev-console warning about
+// unknown paths inside this story router is expected.
 const meta = {
   title: 'Molecules/NavItem',
   component: NavItem,
@@ -17,7 +20,7 @@ const meta = {
       const rootRoute = createRootRoute({
         component: () => (
           <ThemeProvider>
-            <div className="w-62 bg-sidebar p-3">
+            <div className="w-80 bg-sidebar p-3">
               <Story />
             </div>
           </ThemeProvider>
@@ -35,12 +38,19 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// The story router sits at "/", so exact matching renders the selected state.
-export const Selected: Story = {
-  args: { to: '/', label: 'Home', icon: House, exact: true },
+export const Default: Story = {
+  args: { to: '/manage', label: 'Manage', icon: ChartPie, tag: 'overview' },
 };
 
-export const Placeholder: Story = {
-  args: { to: '/', label: 'Agents', icon: House },
-  render: (args) => <NavItemPlaceholder label={args.label} icon={args.icon} />,
+export const Entry: Story = {
+  args: { to: '/new-job', label: 'New Job', icon: CirclePlus, tag: 'entry' },
+};
+
+export const Hat: Story = {
+  args: {
+    to: '/workspace/build',
+    label: 'Build',
+    icon: Construction,
+    variant: 'hat',
+  },
 };
