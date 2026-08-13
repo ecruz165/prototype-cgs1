@@ -97,10 +97,13 @@ describe('Job detail with ActivityRail', () => {
     });
     expect(rail).toBeInTheDocument();
 
+    // Every section is real now — Context was the last placeholder.
     await user.click(screen.getByRole('link', { name: 'Context' }));
-    expect(await screen.findByText('Pane not built yet')).toBeInTheDocument();
+    expect(await screen.findByText('INPUTS')).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Context' }),
+      await screen.findByRole('heading', {
+        name: 'auth token refresh patterns',
+      }),
     ).toBeInTheDocument();
   });
 

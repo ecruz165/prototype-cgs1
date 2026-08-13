@@ -1,6 +1,7 @@
 import { delay, HttpResponse, http } from 'msw';
 import { decisionDetailFor, jobActivity } from './activityFixture';
 import { haltDetailFor, jobBudget } from './budgetFixture';
+import { jobContext, queryDetailFor } from './contextFixture';
 import { jobs } from './fixtures';
 import { jobFlow } from './flowFixture';
 import { nodeDetailFor } from './nodeDetailFixture';
@@ -111,6 +112,25 @@ export const handlers = [
         : undefined;
     if (!detail) {
       return HttpResponse.json({ message: 'unknown gate' }, { status: 404 });
+    }
+    return HttpResponse.json(detail);
+  }),
+  http.get('/api/jobs/:jobId/context', async ({ params }) => {
+    await delay(250);
+    if (!jobs.some((job) => job.id === params.jobId)) {
+      return HttpResponse.json({ message: 'unknown job' }, { status: 404 });
+    }
+    return HttpResponse.json(jobContext);
+  }),
+  http.get('/api/jobs/:jobId/context/:itemId', async ({ params }) => {
+    await delay(200);
+    const detail =
+      jobs.some((job) => job.id === params.jobId) &&
+      typeof params.itemId === 'string'
+        ? queryDetailFor(params.itemId)
+        : undefined;
+    if (!detail) {
+      return HttpResponse.json({ message: 'unknown item' }, { status: 404 });
     }
     return HttpResponse.json(detail);
   }),

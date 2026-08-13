@@ -10,6 +10,12 @@ import {
   type JobBudget,
   JobBudgetSchema,
 } from '@/schemas/budget';
+import {
+  type JobContextData,
+  JobContextSchema,
+  type QueryDetail,
+  QueryDetailSchema,
+} from '@/schemas/context';
 import { type JobFlow, JobFlowSchema } from '@/schemas/flow';
 import { type Job, JobSchema } from '@/schemas/job';
 import { type NodeDetail, NodeDetailSchema } from '@/schemas/nodeDetail';
@@ -205,4 +211,27 @@ export async function fetchPerfDetail(
     );
   }
   return PerfDetailSchema.parse(await response.json());
+}
+
+export async function fetchJobContext(jobId: string): Promise<JobContextData> {
+  const response = await fetch(`/api/jobs/${jobId}/context`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/context failed: ${response.status}`,
+    );
+  }
+  return JobContextSchema.parse(await response.json());
+}
+
+export async function fetchQueryDetail(
+  jobId: string,
+  itemId: string,
+): Promise<QueryDetail> {
+  const response = await fetch(`/api/jobs/${jobId}/context/${itemId}`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/context/${itemId} failed: ${response.status}`,
+    );
+  }
+  return QueryDetailSchema.parse(await response.json());
 }
