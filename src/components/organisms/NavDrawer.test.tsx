@@ -4,7 +4,7 @@ import {
   createRouter,
   RouterProvider,
 } from '@tanstack/react-router';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { queryClient } from '@/lib/queryClient';
@@ -42,15 +42,23 @@ describe('NavDrawer in the app shell', () => {
   it('renders the design sidebar with hats hidden at rest', async () => {
     renderApp();
 
-    await screen.findByRole('navigation', { name: 'Primary' });
+    const drawer = await screen.findByRole('navigation', { name: 'Primary' });
     expect(screen.getByText('Digital Investor Platform')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /New Job/ })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Manage/ })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Jobs/ })).toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: 'Benchmarks' }),
+      within(drawer).getByRole('link', { name: /New Job/ }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
+    expect(
+      within(drawer).getByRole('link', { name: /Manage/ }),
+    ).toBeInTheDocument();
+    expect(
+      within(drawer).getByRole('link', { name: /Jobs/ }),
+    ).toBeInTheDocument();
+    expect(
+      within(drawer).getByRole('link', { name: 'Benchmarks' }),
+    ).toBeInTheDocument();
+    expect(
+      within(drawer).getByRole('link', { name: 'Settings' }),
+    ).toBeInTheDocument();
 
     const disclosure = screen.getByRole('button', { name: /Workspaces/ });
     expect(disclosure).toHaveAttribute('aria-expanded', 'false');

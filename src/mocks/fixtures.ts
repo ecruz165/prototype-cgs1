@@ -1,0 +1,96 @@
+import type { Job } from '@/schemas/job';
+
+// The six jobs from the design's jobs-0-list screen, verbatim.
+export const jobs: Job[] = [
+  {
+    id: 'job_8af21c',
+    name: 'Backfill analytics events to BigQuery',
+    agent: 'data.etl.bq-loader',
+    status: 'running',
+    stepIcon: 'sync',
+    stepText: 'Streaming page_view shard 14/22 · 1.2M rows/min',
+    progress: 62,
+    contexts: [
+      { icon: 'description', label: 'events_2026_q2.sql' },
+      { icon: 'hub', label: 'prod-warehouse' },
+    ],
+    elapsed: '04:18',
+    owner: 'EC',
+  },
+  {
+    id: 'job_8af1f3',
+    name: 'Generate weekly exec digest',
+    agent: 'market.research.digest',
+    status: 'running',
+    stepIcon: 'bolt',
+    stepText: 'Synthesizing competitor signals · drafting section 3 of 5',
+    progress: 48,
+    contexts: [
+      { icon: 'trending_up', label: 'competitor-feed' },
+      { icon: 'article', label: 'digest-template.md' },
+    ],
+    elapsed: '02:47',
+    owner: 'MK',
+  },
+  {
+    id: 'job_8ae9b7',
+    name: 'Deploy controlplane v2.14.0 to staging',
+    agent: 'engineer.ops.deploy',
+    status: 'awaiting',
+    stepIcon: 'front_hand',
+    stepText: 'Awaiting approval: schema migration V0042 touches users table',
+    progress: 80,
+    contexts: [
+      { icon: 'merge_type', label: 'PR #1284' },
+      { icon: 'database', label: 'V0042__add_org_quota.sql' },
+    ],
+    elapsed: '11:32',
+    owner: 'AT',
+  },
+  {
+    id: 'job_8ae8c1',
+    name: 'Index 4,812 docs into context store',
+    agent: 'core.context.indexer',
+    status: 'running',
+    stepIcon: 'hub',
+    stepText: 'Embedding batch 38/49 · text-embedding-3-large',
+    progress: 78,
+    contexts: [
+      { icon: 'folder', label: 'docs/runbooks/' },
+      { icon: 'memory', label: 'ctx-store-prod' },
+    ],
+    elapsed: '08:04',
+    owner: 'RS',
+  },
+  {
+    id: 'job_8adff0',
+    name: 'Refresh stripe customer reconciliation',
+    agent: 'integrations.stripe.recon',
+    status: 'failed',
+    stepIcon: 'error',
+    stepText:
+      'Failed: 429 rate_limit on /v1/charges — retry budget exhausted (3/3)',
+    progress: 34,
+    contexts: [
+      { icon: 'credit_card', label: 'stripe-live' },
+      { icon: 'bug_report', label: 'err_429_recon' },
+    ],
+    elapsed: '01:12',
+    owner: 'NK',
+  },
+  {
+    id: 'job_8adde2',
+    name: 'Publish Q2 launch post',
+    agent: 'market.social.linkedin',
+    status: 'awaiting',
+    stepIcon: 'rate_review',
+    stepText: 'Awaiting tone review · 3 variants drafted',
+    progress: 55,
+    contexts: [
+      { icon: 'campaign', label: 'launch-q2-2026' },
+      { icon: 'image', label: 'og-card-v3.png' },
+    ],
+    elapsed: '06:50',
+    owner: 'DL',
+  },
+];

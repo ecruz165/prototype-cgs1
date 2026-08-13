@@ -1,5 +1,10 @@
-import type { RequestHandler } from 'msw';
+import { delay, HttpResponse, http } from 'msw';
+import { jobs } from './fixtures';
 
-// Empty until the Singularity screens define their API surface; the four
-// consumers (dev worker, Vitest server, Storybook, Playwright) stay wired.
-export const handlers: RequestHandler[] = [];
+export const handlers = [
+  http.get('/api/jobs', async () => {
+    // Artificial latency so the pending state is visible in the UI.
+    await delay(400);
+    return HttpResponse.json(jobs);
+  }),
+];
