@@ -7,12 +7,42 @@ import { jobFlow } from './flowFixture';
 import { newJobDraft } from './newJobFixture';
 import { nodeDetailFor } from './nodeDetailFixture';
 import { notifications } from './notificationsFixture';
+import {
+  buildSection,
+  manageSection,
+  planSection,
+  runSection,
+  validateSection,
+} from './workbenchFixture';
+
+const workspaceSections: Record<string, unknown> = {
+  plan: planSection,
+  build: buildSection,
+  validate: validateSection,
+  run: runSection,
+};
+
 import { fileDiffFor, jobOutput } from './outputFixture';
 import { jobPerformance, perfDetailFor } from './performanceFixture';
 import { gateDetailFor, jobQuality } from './qualityFixture';
 import { jobSteering, steeringDetailFor } from './steeringFixture';
 
 export const handlers = [
+  http.get('/api/workspace/:hat', async ({ params }) => {
+    await delay(200);
+    const section =
+      typeof params.hat === 'string'
+        ? workspaceSections[params.hat]
+        : undefined;
+    if (!section) {
+      return HttpResponse.json({ message: 'unknown hat' }, { status: 404 });
+    }
+    return HttpResponse.json(section);
+  }),
+  http.get('/api/manage', async () => {
+    await delay(200);
+    return HttpResponse.json(manageSection);
+  }),
   http.get('/api/new-job', async () => {
     await delay(200);
     return HttpResponse.json(newJobDraft);

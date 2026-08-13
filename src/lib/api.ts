@@ -48,6 +48,10 @@ import {
   type SteeringDetail,
   SteeringDetailSchema,
 } from '@/schemas/steering';
+import {
+  type WorkbenchSection,
+  WorkbenchSectionSchema,
+} from '@/schemas/workbench';
 
 // Zod at the network boundary: malformed payloads become Query errors
 // instead of bad renders.
@@ -255,4 +259,22 @@ export async function fetchNewJobDraft(): Promise<NewJobDraft> {
     throw new Error(`GET /api/new-job failed: ${response.status}`);
   }
   return NewJobDraftSchema.parse(await response.json());
+}
+
+export async function fetchWorkspaceSection(
+  hat: string,
+): Promise<WorkbenchSection> {
+  const response = await fetch(`/api/workspace/${hat}`);
+  if (!response.ok) {
+    throw new Error(`GET /api/workspace/${hat} failed: ${response.status}`);
+  }
+  return WorkbenchSectionSchema.parse(await response.json());
+}
+
+export async function fetchManageSection(): Promise<WorkbenchSection> {
+  const response = await fetch('/api/manage');
+  if (!response.ok) {
+    throw new Error(`GET /api/manage failed: ${response.status}`);
+  }
+  return WorkbenchSectionSchema.parse(await response.json());
 }

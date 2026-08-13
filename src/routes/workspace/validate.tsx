@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { PagePlaceholder } from '@/components/atoms/PagePlaceholder';
+import { WorkspaceRoute } from '@/components/organisms/WorkbenchRoute';
 
 export const Route = createFileRoute('/workspace/validate')({
-  component: () => <PagePlaceholder title="Workspace · Validate" />,
+  component: () => <WorkspaceRoute hat="validate" />,
 });

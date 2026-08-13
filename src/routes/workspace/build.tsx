@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { PagePlaceholder } from '@/components/atoms/PagePlaceholder';
+import { WorkspaceRoute } from '@/components/organisms/WorkbenchRoute';
 
 export const Route = createFileRoute('/workspace/build')({
-  component: () => <PagePlaceholder title="Workspace · Build" />,
+  component: () => <WorkspaceRoute hat="build" />,
 });

@@ -29,9 +29,8 @@ test('shell: redirect, sidebar navigation, disclosure, theme, collapse', async (
   // Workspaces is a hover-reveal disclosure; hovering exposes the hats.
   await page.getByRole('button', { name: 'Workspaces' }).hover();
   await page.getByRole('link', { name: 'Build' }).click();
-  await expect(
-    page.getByRole('heading', { name: 'Workspace · Build' }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Build' })).toBeVisible();
+  await expect(page.getByText('READY TO BUILD').first()).toBeVisible();
 
   // Playwright contexts default to a light color scheme, so the first
   // toggle click deterministically lands on dark.
