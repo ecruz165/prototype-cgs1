@@ -1,13 +1,32 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { AppHeader } from '@/components/organisms/AppHeader';
+import { useState } from 'react';
+import { AppTopBar } from '@/components/organisms/AppTopBar';
+import { NavDrawer } from '@/components/organisms/NavDrawer';
+
+const NAV_STORAGE_KEY = 'nav-open';
 
 export const Route = createRootRoute({ component: RootLayout });
 
 function RootLayout() {
+  const [navOpen, setNavOpen] = useState(
+    () => localStorage.getItem(NAV_STORAGE_KEY) !== 'closed',
+  );
+  const toggleNav = () =>
+    setNavOpen((open) => {
+      localStorage.setItem(NAV_STORAGE_KEY, open ? 'closed' : 'open');
+      return !open;
+    });
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <AppHeader />
-      <Outlet />
+    <div className="flex h-screen flex-col bg-background text-foreground">
+      {/* Alert count is the design's mock value until notifications exist. */}
+      <AppTopBar navOpen={navOpen} onToggleNav={toggleNav} alertCount={7} />
+      <div className="flex min-h-0 flex-1">
+        {navOpen && <NavDrawer onClose={toggleNav} />}
+        <div className="min-w-0 flex-1 overflow-y-auto">
+          <Outlet />
+        </div>
+      </div>
     </div>
   );
 }

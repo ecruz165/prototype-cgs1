@@ -1,43 +1,19 @@
-import { createFileRoute, Link, Outlet } from '@tanstack/react-router';
+import { createFileRoute, Outlet } from '@tanstack/react-router';
+import { TabItem } from '@/components/molecules/TabItem';
 
 export const Route = createFileRoute('/demos')({ component: DemosLayout });
 
-const subNavLink =
-  'text-sm text-muted-foreground transition-colors hover:text-foreground';
-const activeProps = { className: 'font-medium text-foreground' };
-
+// Section layout: the design's secondary layout pattern — a horizontal tab
+// menu managing the section's views.
 function DemosLayout() {
   return (
     <main className="mx-auto max-w-5xl p-8">
-      <nav aria-label="Demos" className="mb-6 flex items-center gap-4">
-        <Link
-          to="/demos"
-          className={subNavLink}
-          activeProps={activeProps}
-          activeOptions={{ exact: true }}
-        >
-          Overview
-        </Link>
-        <Link
-          to="/demos/editor"
-          className={subNavLink}
-          activeProps={activeProps}
-        >
-          Editor
-        </Link>
-        <Link
-          to="/demos/markdown"
-          className={subNavLink}
-          activeProps={activeProps}
-        >
-          Markdown
-        </Link>
-        <Link to="/demos/flow" className={subNavLink} activeProps={activeProps}>
-          Flow
-        </Link>
-        <Link to="/demos/form" className={subNavLink} activeProps={activeProps}>
-          Form
-        </Link>
+      <nav aria-label="Demos" className="mb-6 flex items-center gap-1">
+        <TabItem to="/demos" label="Overview" exact />
+        <TabItem to="/demos/editor" label="Editor" />
+        <TabItem to="/demos/markdown" label="Markdown" />
+        <TabItem to="/demos/flow" label="Flow" />
+        <TabItem to="/demos/form" label="Form" />
       </nav>
       <Outlet />
     </main>

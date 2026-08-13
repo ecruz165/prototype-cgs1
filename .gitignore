@@ -33,3 +33,4 @@ storybook-static/
 
 # Stray screenshots at repo root (canonical ones live in docs/screenshots/)
 /*.png
+.claude

@@ -1,7 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/geist";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -23,7 +24,8 @@
 
 @theme inline {
     --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
+    --font-sans: 'Inter Variable', sans-serif;
+    --font-mono: 'JetBrains Mono Variable', monospace;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -62,75 +64,143 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+
+    /* Singularity design tokens with no shadcn slot (design/control-plane-v2.pen). */
+    --color-topbar: var(--topbar);
+    --color-conversation: var(--conversation);
+    --color-border-subtle: var(--border-subtle);
+    --color-tertiary: var(--tertiary);
+    --color-faint: var(--faint);
+    --color-brand: var(--brand);
+    --color-brand-subtle: var(--brand-subtle);
+    --color-brand-deep: var(--brand-deep);
+    --color-accent-strong: var(--accent-strong);
+    --color-on-accent: var(--on-accent);
+    --color-status-active: var(--status-active);
+    --color-status-active-subtle: var(--status-active-subtle);
+    --color-status-warning: var(--status-warning);
+    --color-status-warning-subtle: var(--status-warning-subtle);
+    --color-status-danger: var(--status-danger);
+    --color-status-danger-subtle: var(--status-danger-subtle);
+    --color-status-badge-bg: var(--status-badge-bg);
+    --color-status-badge-text: var(--status-badge-text);
+    --color-mic-red: var(--mic-red);
 }
 
+/*
+ * Singularity Design System — light mode.
+ * Values come from design/control-plane-v2.pen variables (mode: light).
+ */
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
+    --background: #F1F5F9;          /* bg-primary */
+    --foreground: #1A1A1A;          /* text-primary */
+    --card: #FFFFFF;                /* bg-surface */
+    --card-foreground: #1A1A1A;
+    --popover: #FFFFFF;             /* bg-surface */
+    --popover-foreground: #1A1A1A;
+    --primary: #0F2A5C;             /* brand */
+    --primary-foreground: #FFFFFF;
+    --secondary: #FFFFFF;           /* bg-surface (Button/Secondary) */
+    --secondary-foreground: #1A1A1A;
+    --muted: #E2E8F0;               /* bg-inset */
+    --muted-foreground: #4A5260;    /* text-secondary */
+    --accent: #E5F0FA;              /* accent-subtle */
+    --accent-foreground: #2074B5;   /* accent */
+    --destructive: #DC2626;         /* status-danger */
+    --border: #E2E8F0;
+    --input: #E2E8F0;
+    --ring: #2074B5;                /* accent */
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0);
     --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+    --sidebar: #FFFFFF;             /* bg-sidebar */
+    --sidebar-foreground: #1A1A1A;
+    --sidebar-primary: #0F2A5C;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #E5F0FA;
+    --sidebar-accent-foreground: #2074B5;
+    --sidebar-border: #E2E8F0;
+    --sidebar-ring: #2074B5;
+
+    --topbar: #FFFFFF;              /* bg-topbar */
+    --conversation: #FFFFFF;        /* bg-conversation */
+    --border-subtle: #F1F5F9;
+    --tertiary: #64748B;            /* text-tertiary */
+    --faint: #CBD5E1;               /* text-muted: placeholder/disabled only */
+    --brand: #0F2A5C;
+    --brand-subtle: #E8EEF7;
+    --brand-deep: #0A1F45;
+    --accent-strong: #2074B5;       /* accent */
+    --on-accent: #FFFFFF;           /* text-on-accent */
+    --status-active: #16A34A;
+    --status-active-subtle: #DCFCE7;
+    --status-warning: #B45309;
+    --status-warning-subtle: #FEF3C7;
+    --status-danger: #DC2626;
+    --status-danger-subtle: #FEE2E2;
+    --status-badge-bg: #DCFCE7;
+    --status-badge-text: #166534;
+    --mic-red: #EF4444;
 }
 
+/*
+ * Singularity Design System — dark mode (mode: dark in the .pen).
+ */
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
+    --background: #070B16;          /* bg-primary */
+    --foreground: #FFFFFF;          /* text-primary */
+    --card: #0E1A30;                /* bg-surface */
+    --card-foreground: #FFFFFF;
+    --popover: #0E1A30;
+    --popover-foreground: #FFFFFF;
+    --primary: #5E76B0;             /* brand */
+    --primary-foreground: #FFFFFF;
+    --secondary: #0E1A30;           /* bg-surface */
+    --secondary-foreground: #FFFFFF;
+    --muted: #0A1020;               /* bg-inset */
+    --muted-foreground: #94A3B8;    /* text-secondary */
+    --accent: #0C2A3A;              /* accent-subtle */
+    --accent-foreground: #22D3EE;   /* accent */
+    --destructive: #F87171;         /* status-danger */
+    --border: #1B2336;
+    --input: #1B2336;
+    --ring: #22D3EE;                /* accent */
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    --sidebar: #000000;             /* bg-sidebar */
+    --sidebar-foreground: #FFFFFF;
+    --sidebar-primary: #5E76B0;
+    --sidebar-primary-foreground: #FFFFFF;
+    --sidebar-accent: #0C2A3A;
+    --sidebar-accent-foreground: #22D3EE;
+    --sidebar-border: #1B2336;
+    --sidebar-ring: #22D3EE;
+
+    --topbar: #000000;              /* bg-topbar */
+    --conversation: #0D1322;        /* bg-conversation */
+    --border-subtle: #0E1424;
+    --tertiary: #64748B;
+    --faint: #475569;               /* text-muted */
+    --brand: #5E76B0;
+    --brand-subtle: #15294F;
+    --brand-deep: #0F1E3D;
+    --accent-strong: #22D3EE;
+    --on-accent: #0A0F1C;           /* text-on-accent */
+    --status-active: #22C55E;
+    --status-active-subtle: #11271A;
+    --status-warning: #F59E0B;
+    --status-warning-subtle: #3A2A12;
+    --status-danger: #F87171;
+    --status-danger-subtle: #2A1212;
+    --status-badge-bg: #064E3B;
+    --status-badge-text: #34D399;
+    --mic-red: #EF4444;
 }
 
 @layer base {
