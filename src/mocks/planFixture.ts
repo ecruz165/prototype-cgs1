@@ -1,0 +1,912 @@
+import type { PlanData } from '@/schemas/plan';
+
+// The design's workspace-plan-1..6 screens, verbatim.
+export const planData: PlanData = {
+  title: 'Plan',
+  scope: 'FeatureSet · all features',
+  altitudes: ['Portfolio', 'Product'],
+  altitude: 'Product',
+  discovery: {
+    subtitle:
+      'Discovery — distill raw input into curated artifacts · Digital Investor Platform',
+    stats: [
+      { label: 'ACTIVE JOBS', value: '3', sub: null },
+      { label: 'ARTIFACTS', value: '6', sub: null },
+      { label: 'CURATED', value: '2', sub: null },
+      { label: 'PUBLISHED', value: '2', sub: null },
+    ],
+    launcher: {
+      label: 'INVOKE DISCOVERY',
+      sub: 'distill raw input into reusable artifacts · pick a job type',
+      tiles: [
+        {
+          icon: 'account_tree',
+          title: 'Codebase exploration',
+          desc: 'Map an unfamiliar area of the codebase into a navigable reference.',
+          action: 'Explore codebase',
+        },
+        {
+          icon: 'science',
+          title: 'Research / spike',
+          desc: 'Time-box an investigation of an approach, library, or trade-off.',
+          action: 'Run spike',
+        },
+        {
+          icon: 'manage_search',
+          title: 'Root-cause investigation',
+          desc: 'Trace a defect or anomaly back to its origin in the system.',
+          action: 'Investigate',
+        },
+      ],
+    },
+    running: {
+      label: 'RUNNING JOBS',
+      sub: 'in-flight distillation · live progress',
+      jobs: [
+        {
+          title: 'Rebalance rules engine',
+          kind: 'CODEBASE',
+          status: 'Running',
+          statusTone: 'accent',
+          pct: 72,
+          detail: 'step 4 / 5 · 318 files indexed · elapsed 6m',
+        },
+        {
+          title: 'Tax-lot export formats',
+          kind: 'SPIKE',
+          status: 'Running',
+          statusTone: 'accent',
+          pct: 45,
+          detail: 'step 2 / 4 · comparing 3 libraries · elapsed 11m',
+        },
+        {
+          title: 'Statements PDF mismatch',
+          kind: 'ROOT-CAUSE',
+          status: 'Awaiting',
+          statusTone: 'warning',
+          pct: 0,
+          detail: 'waiting on repo access · queued 2m ago',
+        },
+      ],
+    },
+    repository: {
+      label: 'ARTIFACT REPOSITORY',
+      sub: 'curated discovery outputs · feed PRD authoring',
+      rows: [
+        {
+          artifact: 'Rebalance engine — code map',
+          desc: 'navigable reference · 12 pages',
+          type: 'Discovery Doc',
+          state: 'Published',
+          stateTone: 'active',
+          informs: 'Rebalance rules',
+          updated: '2h ago',
+        },
+        {
+          artifact: 'Order routing findings',
+          desc: '8 findings · 3 risks flagged',
+          type: 'Finding',
+          state: 'Curated',
+          stateTone: 'accent',
+          informs: 'Fractional orders',
+          updated: '1d ago',
+        },
+        {
+          artifact: 'Tax-lot export format spike',
+          desc: 'CSV vs OFX vs custom schema',
+          type: 'Spike',
+          state: 'Curated',
+          stateTone: 'accent',
+          informs: 'Tax-lot export',
+          updated: '3h ago',
+        },
+        {
+          artifact: 'Statements PDF mismatch',
+          desc: 'root cause · renderer rounding',
+          type: 'Finding',
+          state: 'Draft',
+          stateTone: 'muted',
+          informs: 'Statements',
+          updated: '22m ago',
+        },
+        {
+          artifact: 'Advisor chat retrieval spike',
+          desc: 'RAG vs fine-tune · latency',
+          type: 'Spike',
+          state: 'Published',
+          stateTone: 'active',
+          informs: 'Advisor chat',
+          updated: '2d ago',
+        },
+        {
+          artifact: 'Custodian API surface map',
+          desc: 'endpoints · auth · rate limits',
+          type: 'Discovery Doc',
+          state: 'Draft',
+          stateTone: 'muted',
+          informs: 'Settlement',
+          updated: '30m ago',
+        },
+      ],
+    },
+  },
+  prds: {
+    subtitle:
+      'PRDs — author, publish & refine product requirements · Digital Investor Platform',
+    stats: [
+      { label: 'TOTAL PRDS', value: '4', sub: 'across 4 features' },
+      { label: 'PUBLISHED', value: '1', sub: 'Fractional orders v2' },
+      { label: 'IN REVIEW', value: '1', sub: 'Rebalance rules' },
+      { label: 'DRAFT', value: '1', sub: 'Tax-lot export' },
+    ],
+    lifecycle: {
+      label: 'PRD LIFECYCLE',
+      sub: 'draft → publish → review → refine · terminal artifact — complete at publish',
+      stages: [
+        { label: 'DRAFT', sub: '1 · Tax-lot export', tone: 'muted' },
+        { label: 'PUBLISHED', sub: '1 · Fractional orders', tone: 'active' },
+        { label: 'IN REVIEW', sub: '1 · Rebalance rules', tone: 'default' },
+        { label: 'REFINE', sub: '1 · Statements', tone: 'default' },
+      ],
+    },
+    library: {
+      label: 'PRD LIBRARY',
+      sub: '4 docs · 1 published · 1 in review · 1 refine · 1 draft · ↑ roadmap · ↓ trace',
+      rows: [
+        {
+          prd: 'Fractional orders v2',
+          id: 'PRD #FO-2',
+          feature: 'Fractional orders',
+          state: 'Published',
+          stateTone: 'active',
+          owner: 'feature-spec · J-204',
+          roadmap: 'M1 · Custody',
+          trace: '6 § · 5 sources',
+        },
+        {
+          prd: 'Rebalance rules',
+          id: 'PRD #RB-1',
+          feature: 'Rebalance rules',
+          state: 'In review',
+          stateTone: 'accent',
+          owner: 'feature-spec · J-211',
+          roadmap: 'M2 · Advisor',
+          trace: '5 § · 4 sources',
+        },
+        {
+          prd: 'Statements & tax docs',
+          id: 'PRD #ST-1',
+          feature: 'Statements',
+          state: 'Refine',
+          stateTone: 'warning',
+          owner: 'feature-spec · J-198',
+          roadmap: 'M2 · Advisor',
+          trace: '4 § · 3 sources',
+        },
+        {
+          prd: 'Tax-lot export',
+          id: 'PRD #TL-1',
+          feature: 'Tax-lot export',
+          state: 'Draft',
+          stateTone: 'muted',
+          owner: 'feature-spec · J-220',
+          roadmap: 'M3 · Reporting',
+          trace: '3 § · 2 sources',
+        },
+      ],
+    },
+    focus: {
+      label: 'AUTHORING PRD',
+      title: 'Rebalance rules',
+      pills: [{ label: 'in review', tone: 'accent' }],
+      meta: 'PRD #RB-1 · §1–§5',
+      roadmapChip: '↑ Roadmap · M2 Advisor experience',
+      sectionsLabel: 'SECTIONS · 5 · feature-spec',
+      sections: [
+        {
+          num: '§1',
+          name: 'Overview & goals',
+          state: 'Done',
+          stateTone: 'active',
+        },
+        { num: '§2', name: 'User stories', state: 'Done', stateTone: 'active' },
+        {
+          num: '§3',
+          name: 'Rebalance rules engine',
+          state: 'In progress',
+          stateTone: 'accent',
+        },
+        {
+          num: '§4',
+          name: 'Acceptance criteria',
+          state: 'In review',
+          stateTone: 'warning',
+        },
+        {
+          num: '§5',
+          name: 'Risks & open questions',
+          state: 'To do',
+          stateTone: 'muted',
+        },
+      ],
+      jobsLabel: 'CONTRIBUTING JOBS · 3 jobs',
+      jobs: [
+        {
+          name: 'feature-spec',
+          id: 'J-211',
+          state: 'Running',
+          stateTone: 'accent',
+          note: 'Owns the spec · drafted §1–§5',
+        },
+        {
+          name: 'ux-flows',
+          id: 'J-213',
+          state: 'Done',
+          stateTone: 'active',
+          note: 'Flows & UI states → §2, §3',
+        },
+        {
+          name: 'architecture',
+          id: 'J-215',
+          state: 'Running',
+          stateTone: 'accent',
+          note: 'NFRs & system design → §3, §4',
+        },
+      ],
+      sourcesLabel: 'SOURCE ARTIFACTS · ↓ discovery',
+      sources: [
+        {
+          name: 'Discovery brief',
+          desc: 'Rebalancing advisor needs',
+          tag: 'brief',
+        },
+        {
+          name: 'Advisor interviews',
+          desc: '6 sessions · synthesized',
+          tag: 'research',
+        },
+        {
+          name: 'Competitive scan',
+          desc: 'Betterment · Wealthfront',
+          tag: 'market',
+        },
+        {
+          name: 'OQ-7 resolution',
+          desc: 'drift threshold = 5%',
+          tag: 'decision',
+        },
+      ],
+    },
+    publish: {
+      title: 'TERMINAL AT PUBLISH · RB-1',
+      text: 'Rebalance rules — 2 of 5 sections complete. Publish closes the artifact.',
+      action: 'Publish PRD',
+    },
+  },
+  roadmap: {
+    subtitle: 'Roadmap — capability milestones over time · Portfolio',
+    stats: [
+      { label: 'SHIPPED', value: '1', sub: null },
+      { label: 'ON TRACK', value: '3', sub: null },
+      { label: 'AT RISK', value: '1', sub: null },
+      { label: 'PLANNED', value: '3', sub: null },
+    ],
+    board: {
+      label: 'PORTFOLIO ROADMAP',
+      sub: 'capability milestones over time · milestones trace to PRDs',
+      legend: [
+        { label: 'Shipped', tone: 'active' },
+        { label: 'On track', tone: 'accent' },
+        { label: 'At risk', tone: 'warning' },
+        { label: 'Planned', tone: 'muted' },
+      ],
+      quarters: ['Q3 2026', 'Q4 2026', 'Q1 2027', 'Q2 2027'],
+      rows: [
+        {
+          capability: 'Fractional orders',
+          chips: [
+            {
+              label: 'GA launch',
+              sub: 'PRD #FO-2 · shipped',
+              quarter: 0,
+              tone: 'active',
+            },
+          ],
+        },
+        {
+          capability: 'Rebalance rules',
+          chips: [
+            {
+              label: 'v2 rules engine',
+              sub: 'PRD #RB-1 · on track',
+              quarter: 1,
+              tone: 'accent',
+            },
+            {
+              label: 'auto-rebalance',
+              sub: 'PRD #RB-2 · planned',
+              quarter: 2,
+              tone: 'muted',
+            },
+          ],
+        },
+        {
+          capability: 'Portfolio charts',
+          chips: [
+            {
+              label: 'interactive charts',
+              sub: 'PRD #PC-1 · on track',
+              quarter: 1,
+              tone: 'accent',
+            },
+          ],
+        },
+        {
+          capability: 'Statements',
+          chips: [
+            {
+              label: 'redesign GA',
+              sub: 'PRD #ST-3 · at risk',
+              quarter: 1,
+              tone: 'warning',
+            },
+          ],
+        },
+        {
+          capability: 'Tax-lot export',
+          chips: [
+            {
+              label: 'export beta',
+              sub: 'PRD draft · planned',
+              quarter: 2,
+              tone: 'muted',
+            },
+          ],
+        },
+        {
+          capability: 'KYC onboarding v2',
+          chips: [
+            {
+              label: 'v2 rollout',
+              sub: 'PRD #KYC-2 · on track',
+              quarter: 2,
+              tone: 'accent',
+            },
+          ],
+        },
+        {
+          capability: 'Advisor chat',
+          chips: [
+            {
+              label: 'pilot',
+              sub: 'no PRD yet · planned',
+              quarter: 3,
+              tone: 'muted',
+            },
+          ],
+        },
+      ],
+    },
+    oq: {
+      label: 'BLOCKING DECISION · OQ-1',
+      text: 'Roadmap output format is TBD — dated quarters (shown) vs now/next/later.',
+      action: 'Decide',
+    },
+  },
+  decompose: {
+    subtitle:
+      'Decompose — PRD → deduped, traceable stories in Jira · Digital Investor Platform',
+    stats: [
+      { label: 'FORECASTED STORIES', value: '14', sub: null },
+      { label: 'NEW (DEDUPED)', value: '9', sub: null },
+      { label: 'MERGED / DUP', value: '4', sub: null },
+      { label: 'PUSHED TO JIRA', value: '9', sub: null },
+    ],
+    action: {
+      title: 'SOURCE PRD · Fractional orders v2',
+      id: 'PRD #FO-2 · §1–§6',
+      state: 'published',
+      meta: 'Decompose with dedup',
+      button: 'Decompose with dedup',
+      stages: [
+        { label: 'PRD', sub: 'published', tone: 'active' },
+        { label: 'STORIES', sub: '14 forecast', tone: 'accent' },
+        { label: 'DEDUP', sub: '4 merged', tone: 'warning' },
+        { label: 'JIRA', sub: '9 pushed', tone: 'active' },
+      ],
+    },
+    forecast: {
+      label: 'DECOMPOSITION FORECAST',
+      sub: 'PRD → epics & stories · deduped vs backlog · pushed to Jira',
+      rows: [
+        {
+          story: 'Order routing engine',
+          epic: 'Routing',
+          trace: 'PRD §3.2',
+          dedup: 'New',
+          dedupTone: 'active',
+          jira: 'JIRA-4821',
+          jiraTone: 'accent',
+          scale: 'M',
+        },
+        {
+          story: 'Fractional lot allocation',
+          epic: 'Routing',
+          trace: 'PRD §3.3',
+          dedup: 'New',
+          dedupTone: 'active',
+          jira: 'JIRA-4822',
+          jiraTone: 'accent',
+          scale: 'L',
+        },
+        {
+          story: 'Settlement reconciliation',
+          epic: 'Settlement',
+          trace: 'PRD §4.1',
+          dedup: 'Dup → #1291',
+          dedupTone: 'warning',
+          jira: 'merged',
+          jiraTone: 'muted',
+          scale: 'S',
+        },
+        {
+          story: 'Order status webhooks',
+          epic: 'Webhooks',
+          trace: 'PRD §3.5',
+          dedup: 'New',
+          dedupTone: 'active',
+          jira: 'pending',
+          jiraTone: 'muted',
+          scale: 'S',
+        },
+        {
+          story: 'Custodian adapter',
+          epic: 'Custody',
+          trace: 'PRD §5.0',
+          dedup: 'Conflict → #1188',
+          dedupTone: 'danger',
+          jira: 'blocked',
+          jiraTone: 'danger',
+          scale: 'M',
+        },
+        {
+          story: 'Fee schedule update',
+          epic: 'Fees',
+          trace: 'PRD §6.1',
+          dedup: 'New',
+          dedupTone: 'active',
+          jira: 'JIRA-4825',
+          jiraTone: 'accent',
+          scale: 'S',
+        },
+      ],
+    },
+    awaiting: {
+      label: 'AWAITING SPEC',
+      sub: 'need a PRD before they can decompose',
+      rows: [
+        { name: 'Tax-lot export', tag: 'PRD DRAFT', tone: 'muted' },
+        { name: 'Advisor chat', tag: 'NO PRD', tone: 'danger' },
+        { name: 'KYC onboarding v2', tag: 'IN DISCOVERY', tone: 'accent' },
+      ],
+    },
+    dedup: {
+      label: 'DEDUP & DECONFLICT',
+      sub: 'matches against the existing backlog',
+      rows: [
+        {
+          name: 'Custodian adapter',
+          link: '↔ #1188',
+          verdict: 'RESOLVE',
+          verdictTone: 'danger',
+          note: 'keep both · merge · supersede',
+        },
+        {
+          name: 'Settlement reconciliation',
+          link: '→ #1291',
+          verdict: 'MERGED',
+          verdictTone: 'active',
+          note: 'folded into existing story',
+        },
+        {
+          name: 'Rebalance threshold',
+          link: '↔ #1302',
+          verdict: 'LINKED',
+          verdictTone: 'accent',
+          note: 'same story · cross-hat link',
+        },
+      ],
+    },
+    oq: {
+      label: 'BLOCKING DECISION · OQ-2',
+      text: 'Is Jira the backlog system of record, or does Singularity own it?',
+      action: 'Decide',
+    },
+  },
+  readiness: {
+    subtitle:
+      'Readiness — is the work ready to build? · Digital Investor Platform',
+    board: {
+      label: 'FEATURES BY READINESS',
+      sub: 'decomposed · specced · acceptance criteria',
+      lanes: [
+        {
+          name: 'Ready to build',
+          count: '2',
+          tone: 'active',
+          features: [
+            {
+              name: 'Tax-lot export',
+              checks: [
+                { label: 'Decomp', done: true },
+                { label: 'Spec', done: true },
+                { label: 'AC', done: true },
+              ],
+            },
+            {
+              name: 'Portfolio charts',
+              checks: [
+                { label: 'Decomp', done: true },
+                { label: 'Spec', done: true },
+                { label: 'AC', done: true },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'In definition',
+          count: '3',
+          tone: 'accent',
+          features: [
+            {
+              name: 'Fractional orders',
+              checks: [
+                { label: 'Decomp', done: true },
+                { label: 'Spec', done: true },
+                { label: 'AC', done: false },
+              ],
+            },
+            {
+              name: 'Rebalance rules',
+              checks: [
+                { label: 'Decomp', done: true },
+                { label: 'Spec', done: false },
+                { label: 'AC', done: false },
+              ],
+            },
+            {
+              name: 'Advisor chat',
+              checks: [
+                { label: 'Decomp', done: true },
+                { label: 'Spec', done: false },
+                { label: 'AC', done: false },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'Needs decomposition',
+          count: '2',
+          tone: 'warning',
+          features: [
+            {
+              name: 'KYC onboarding v2',
+              checks: [
+                { label: 'Decomp', done: false },
+                { label: 'Spec', done: false },
+                { label: 'AC', done: false },
+              ],
+            },
+            {
+              name: 'Statements redesign',
+              checks: [
+                { label: 'Decomp', done: false },
+                { label: 'Spec', done: false },
+                { label: 'AC', done: false },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    sme: {
+      label: 'SME ROUTING · NEEDS YOU',
+      sub: 'questions kicked back for human input',
+      headline: '3',
+      headlineSub: 'open questions · kicked back to a human · awaiting SME',
+      tags: ['2 HITL', '1 HITL+gated'],
+      rows: [
+        {
+          question: 'Which custodian for fractional lots?',
+          tag: 'HITL',
+          tagTone: 'warning',
+          wait: '6h',
+          from: 'Feature specification',
+          sme: 'Tax SME',
+        },
+        {
+          question: 'Confirm KYC tier for minors',
+          tag: 'HITL',
+          tagTone: 'warning',
+          wait: '1d',
+          from: 'UX exploration',
+          sme: 'Compliance',
+        },
+        {
+          question: 'Rebalance threshold — 5% or 3%?',
+          tag: 'HITL+gated',
+          tagTone: 'danger',
+          wait: '3h',
+          from: 'Estimation',
+          sme: 'PM',
+        },
+      ],
+    },
+    forecast: {
+      label: 'DECOMPOSITION FORECAST',
+      sub: 'autonomy · needs-you · spend · risk',
+      context: '18 of 29 stories decomposed',
+      contextSub: '11 coarse · not forecastable',
+      autonomy: [
+        { label: 'full', value: '9 · 50%', pct: 50 },
+        { label: 'gated', value: '4 · 22%', pct: 22 },
+        { label: 'HITL', value: '4 · 22%', pct: 22 },
+        { label: 'HITL+gated', value: '1 · 6%', pct: 6 },
+      ],
+      needsYou: '5 stories forecast to route back to a human',
+      spend: [
+        { label: 'small', value: '$14' },
+        { label: 'mid', value: '$52' },
+        { label: 'frontier', value: '$90' },
+        { label: 'total est', value: '$156' },
+      ],
+      spendNote: 'frontier-heavy — driven by L-scale work · config-driven',
+      risk: [
+        { label: 'non-breaking', value: '11' },
+        { label: 'breaking', value: '5' },
+        { label: 'migration', value: '2' },
+      ],
+    },
+    defjobs: {
+      label: 'DEFINITION JOBS',
+      sub: 'Plan + Manage · spec / UX / estimate',
+      groups: [
+        {
+          name: 'ROUTES BACK TO YOU',
+          count: '3',
+          rows: [
+            {
+              job: 'Feature specification',
+              feature: 'Fractional orders',
+              state: 'running',
+              tag: 'HITL',
+              tagTone: 'warning',
+            },
+            {
+              job: 'UX exploration',
+              feature: 'Advisor chat',
+              state: 'awaiting',
+              tag: 'HITL',
+              tagTone: 'warning',
+            },
+            {
+              job: 'Estimation',
+              feature: 'Rebalance rules',
+              state: 'running',
+              tag: 'HITL+GATED',
+              tagTone: 'danger',
+            },
+          ],
+        },
+        {
+          name: 'AUTONOMOUS',
+          count: '2',
+          rows: [
+            {
+              job: 'Spec generation',
+              feature: 'Order routing',
+              state: 'running',
+              tag: 'GATED',
+              tagTone: 'accent',
+            },
+            {
+              job: 'Diagram generation',
+              feature: 'Tax-lot export',
+              state: 'done',
+              tag: 'FULL',
+              tagTone: 'active',
+            },
+          ],
+        },
+      ],
+    },
+    awaitspec: {
+      label: 'AWAITING SPEC',
+      sub: 'stories under-defined · block Build',
+      headline: '3 STORIES BLOCKED · by definition gaps',
+      tags: ['2 clearing', '1 no job'],
+      rows: [
+        {
+          story: 'Order routing rules',
+          gap: 'missing AC',
+          clearedBy: 'CLEARED BY Spec generation · running',
+          tone: 'accent',
+        },
+        {
+          story: 'Minor account flow',
+          gap: 'missing spec',
+          clearedBy: 'CLEARED BY Feature specification · running',
+          tone: 'accent',
+        },
+        {
+          story: 'Drift calculation',
+          gap: 'missing spec + AC',
+          clearedBy: 'No job assigned · Assign a definition job',
+          tone: 'danger',
+        },
+      ],
+    },
+  },
+  dependencies: {
+    subtitle:
+      'Dependencies & tracking — sequence the backlog, track artifacts · Digital Investor Platform',
+    stats: [
+      { label: 'STORIES', value: '8', sub: null },
+      { label: 'BLOCKED', value: '4', sub: null },
+      { label: 'CRITICAL PATH', value: '4', sub: null },
+      { label: 'ARTIFACTS DONE', value: '8/12', sub: null },
+    ],
+    graph: {
+      label: 'DEPENDENCY GRAPH',
+      sub: 'Blocking relationships across the feature job graph · blocker → blocked',
+      legend: [
+        { label: 'Done', tone: 'active' },
+        { label: 'Active', tone: 'accent' },
+        { label: 'Queued', tone: 'muted' },
+        { label: 'Blocked', tone: 'danger' },
+      ],
+      lanes: [
+        {
+          name: 'ORDERS → REBALANCE',
+          badges: [{ label: 'ON TRACK', tone: 'active' }],
+          accent: false,
+          nodes: [
+            {
+              name: 'Order routing engine',
+              meta: 'JIRA-4821',
+              state: 'done',
+              tone: 'active',
+            },
+            {
+              name: 'Fractional lot allocation',
+              meta: 'JIRA-4822',
+              state: 'active',
+              tone: 'accent',
+            },
+            {
+              name: 'Rebalance rule engine',
+              meta: 'JIRA-4830',
+              state: 'queued',
+              tone: 'muted',
+            },
+            {
+              name: 'Drift threshold triggers',
+              meta: 'JIRA-4831',
+              state: 'queued',
+              tone: 'muted',
+            },
+          ],
+          note: null,
+        },
+        {
+          name: 'CUSTODY → STATEMENTS',
+          badges: [
+            { label: 'CRITICAL PATH', tone: 'danger' },
+            { label: '4 BLOCKED', tone: 'danger' },
+          ],
+          accent: true,
+          nodes: [
+            {
+              name: 'Custodian adapter',
+              meta: 'conflict · #1188',
+              state: 'blocked',
+              tone: 'danger',
+            },
+            {
+              name: 'Settlement reconciliation',
+              meta: 'JIRA-4824',
+              state: 'blocked',
+              tone: 'danger',
+            },
+            {
+              name: 'Statement generation',
+              meta: 'JIRA-4841',
+              state: 'blocked',
+              tone: 'danger',
+            },
+            {
+              name: 'Tax-lot statement export',
+              meta: 'JIRA-4842',
+              state: 'blocked',
+              tone: 'danger',
+            },
+          ],
+          note: null,
+        },
+      ],
+      crossedge:
+        'Cross-dependency — Tax-lot statement export is also blocked by Fractional lot allocation',
+    },
+    priority: {
+      label: 'PRIORITY & SEQUENCING',
+      sub: 'Re-order to change build sequence · the critical path gates delivery',
+      button: 'Auto-order by impact',
+      rows: [
+        {
+          rank: '1',
+          story: 'Custodian adapter',
+          feature: 'Custody & Settlement',
+          state: 'blocked',
+          stateTone: 'danger',
+          critical: true,
+          downstream: '3 downstream',
+        },
+        {
+          rank: '2',
+          story: 'Fractional lot allocation',
+          feature: 'Fractional Orders',
+          state: 'active',
+          stateTone: 'accent',
+          critical: false,
+          downstream: '3 downstream',
+        },
+        {
+          rank: '3',
+          story: 'Settlement reconciliation',
+          feature: 'Custody & Settlement',
+          state: 'blocked',
+          stateTone: 'danger',
+          critical: true,
+          downstream: '2 downstream',
+        },
+        {
+          rank: '4',
+          story: 'Statement generation',
+          feature: 'Statements',
+          state: 'blocked',
+          stateTone: 'danger',
+          critical: true,
+          downstream: '1 downstream',
+        },
+        {
+          rank: '5',
+          story: 'Rebalance rule engine',
+          feature: 'Rebalance Rules',
+          state: 'queued',
+          stateTone: 'muted',
+          critical: false,
+          downstream: '1 downstream',
+        },
+      ],
+      more: '3 more queued in backlog — showing top 5 by downstream impact',
+    },
+    tracking: {
+      label: 'ARTIFACT & STORY TRACKING',
+      sub: 'Completion across discovery, PRDs and roadmap milestones',
+      columns: ['AREA', 'DISCOVERY', 'PRD', 'ROADMAP', 'STORIES READY'],
+      rows: [
+        ['Fractional Orders', 'done', 'published', 'Q3 · GA', '2/2 ready'],
+        ['Rebalance Rules', 'done', 'in review', 'Q4 · committed', '2/2 ready'],
+        [
+          'Custody & Settlement',
+          'done',
+          'in review',
+          'Q4 · committed',
+          '0/2 ready',
+        ],
+        ['Statements', 'in review', 'draft', 'Q4 · committed', '0/2 ready'],
+      ],
+      foot: '8 of 12 artifacts complete · 4 of 8 stories ready — both Statements stories blocked',
+    },
+  },
+};

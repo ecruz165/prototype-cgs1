@@ -7,6 +7,7 @@ import { jobFlow } from './flowFixture';
 import { newJobDraft } from './newJobFixture';
 import { nodeDetailFor } from './nodeDetailFixture';
 import { notifications } from './notificationsFixture';
+import { planData } from './planFixture';
 import {
   buildSection,
   manageSection,
@@ -28,6 +29,10 @@ import { gateDetailFor, jobQuality } from './qualityFixture';
 import { jobSteering, steeringDetailFor } from './steeringFixture';
 
 export const handlers = [
+  http.get('/api/plan', async () => {
+    await delay(200);
+    return HttpResponse.json(planData);
+  }),
   http.get('/api/workspace/:hat', async ({ params }) => {
     await delay(200);
     const section =

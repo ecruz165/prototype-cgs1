@@ -36,6 +36,7 @@ import {
   type PerfDetail,
   PerfDetailSchema,
 } from '@/schemas/performance';
+import { type PlanData, PlanDataSchema } from '@/schemas/plan';
 import {
   type GateDetail,
   GateDetailSchema,
@@ -277,4 +278,12 @@ export async function fetchManageSection(): Promise<WorkbenchSection> {
     throw new Error(`GET /api/manage failed: ${response.status}`);
   }
   return WorkbenchSectionSchema.parse(await response.json());
+}
+
+export async function fetchPlanData(): Promise<PlanData> {
+  const response = await fetch('/api/plan');
+  if (!response.ok) {
+    throw new Error(`GET /api/plan failed: ${response.status}`);
+  }
+  return PlanDataSchema.parse(await response.json());
 }
