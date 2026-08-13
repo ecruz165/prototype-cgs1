@@ -1,4 +1,5 @@
 import {
+  Bot,
   Bug,
   Circle,
   CircleAlert,
@@ -24,6 +25,7 @@ import {
   MessageSquareText,
   Newspaper,
   PiggyBank,
+  ReceiptText,
   RefreshCw,
   Route,
   Settings,
@@ -71,6 +73,8 @@ const designIcons: Record<string, LucideIcon> = {
   pause_circle: CirclePause,
   flag: Flag,
   confirmation_number: Ticket,
+  smart_toy: Bot,
+  receipt_long: ReceiptText,
 };
 
 export function designIcon(name: string): LucideIcon {

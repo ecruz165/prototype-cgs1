@@ -37,9 +37,54 @@ describe('Job detail with ActivityRail', () => {
 
     const selected = screen.getByRole('button', { current: true });
     expect(selected).toHaveTextContent('Generate patch');
-    // The selection feeds the canvas title.
+    // The selection feeds the canvas.
     expect(
-      screen.getByRole('heading', { name: 'Flow · Generate patch' }),
+      await screen.findByRole('heading', { name: 'Generate patch' }),
+    ).toBeInTheDocument();
+  });
+
+  it('renders the node detail canvas for the selected phase', async () => {
+    renderDetail();
+
+    await screen.findByRole('heading', { name: 'Generate patch' });
+    expect(screen.getByText('INPUT')).toBeInTheDocument();
+    expect(
+      screen.getByText('node-4a · started 14:05:46 · 2m14s'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('· claude-opus-4.8 · anthropic'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('OUTPUT — streaming · 2 of 4 files'),
+    ).toBeInTheDocument();
+  });
+
+  it('navigates to a section via a cross-link', async () => {
+    const user = userEvent.setup();
+    renderDetail();
+
+    await screen.findByRole('heading', { name: 'Generate patch' });
+    await user.click(screen.getByRole('link', { name: /Changed Files/ }));
+    expect(
+      await screen.findByRole('heading', { name: 'Output' }),
+    ).toBeInTheDocument();
+  });
+
+  it('updates the canvas when another phase is selected', async () => {
+    const user = userEvent.setup();
+    renderDetail();
+
+    await screen.findByRole('heading', { name: 'Generate patch' });
+    const planButton = screen
+      .getByText('Plan', { exact: true })
+      .closest('button');
+    expect(planButton).not.toBeNull();
+    await user.click(planButton as HTMLElement);
+    expect(
+      await screen.findByRole('heading', { name: 'Plan' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('No detail captured for this phase yet.'),
     ).toBeInTheDocument();
   });
 

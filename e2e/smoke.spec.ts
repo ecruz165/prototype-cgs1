@@ -14,7 +14,7 @@ test('shell: redirect, sidebar navigation, disclosure, theme, collapse', async (
     .click();
   await expect(page).toHaveURL(/\/jobs\/job_8af21c\/flow$/);
   await expect(
-    page.getByRole('heading', { name: 'Flow · Generate patch' }),
+    page.getByRole('heading', { name: 'Generate patch' }),
   ).toBeVisible();
   await page.getByRole('link', { name: 'Output' }).click();
   await expect(page.getByRole('heading', { name: 'Output' })).toBeVisible();
