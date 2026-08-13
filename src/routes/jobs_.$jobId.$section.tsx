@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ActivityRail } from '@/components/organisms/ActivityRail';
 import { FlowSection } from '@/components/organisms/FlowSection';
 import { OutputSection } from '@/components/organisms/OutputSection';
+import { QualitySection } from '@/components/organisms/QualitySection';
 import { SteeringSection } from '@/components/organisms/SteeringSection';
 import { isJobSection, jobSections } from '@/lib/jobSections';
 
@@ -34,6 +35,8 @@ function JobDetailPage() {
         <SteeringSection jobId={jobId} paneOpen={paneOpen} />
       ) : sectionSlug === 'output' ? (
         <OutputSection jobId={jobId} paneOpen={paneOpen} />
+      ) : sectionSlug === 'quality' ? (
+        <QualitySection jobId={jobId} paneOpen={paneOpen} />
       ) : (
         <PlaceholderSection label={section.label} paneOpen={paneOpen} />
       )}

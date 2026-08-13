@@ -10,6 +10,7 @@ import {
   CircleMinus,
   CirclePause,
   CirclePlus,
+  CircleX,
   ClipboardCheck,
   CodeXml,
   CreditCard,
@@ -27,6 +28,7 @@ import {
   Hand,
   Image,
   Info,
+  Lock,
   type LucideIcon,
   Megaphone,
   MemoryStick,
@@ -45,6 +47,7 @@ import {
   Split,
   ThumbsUp,
   Ticket,
+  TrendingDown,
   TrendingUp,
   Vote,
   Waypoints,
@@ -108,6 +111,9 @@ const designIcons: Record<string, LucideIcon> = {
   summarize: FileText,
   data_object: Braces,
   html: CodeXml,
+  cancel: CircleX,
+  lock: Lock,
+  trending_down: TrendingDown,
 };
 
 export function designIcon(name: string): LucideIcon {

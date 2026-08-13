@@ -8,6 +8,12 @@ import {
   JobOutputSchema,
 } from '@/schemas/output';
 import {
+  type GateDetail,
+  GateDetailSchema,
+  type JobQuality,
+  JobQualitySchema,
+} from '@/schemas/quality';
+import {
   type JobSteering,
   JobSteeringSchema,
   type SteeringDetail,
@@ -89,4 +95,27 @@ export async function fetchFileDiff(
     );
   }
   return FileDiffSchema.parse(await response.json());
+}
+
+export async function fetchJobQuality(jobId: string): Promise<JobQuality> {
+  const response = await fetch(`/api/jobs/${jobId}/quality`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/quality failed: ${response.status}`,
+    );
+  }
+  return JobQualitySchema.parse(await response.json());
+}
+
+export async function fetchGateDetail(
+  jobId: string,
+  gateId: string,
+): Promise<GateDetail> {
+  const response = await fetch(`/api/jobs/${jobId}/quality/${gateId}`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/quality/${gateId} failed: ${response.status}`,
+    );
+  }
+  return GateDetailSchema.parse(await response.json());
 }

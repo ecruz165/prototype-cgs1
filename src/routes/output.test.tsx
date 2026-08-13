@@ -49,9 +49,7 @@ describe('Output section', () => {
     expect(
       screen.getByText('@@ src/auth/token.service.ts'),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(/const ROTATION_WINDOW_MS/),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/const ROTATION_WINDOW_MS/)).toBeInTheDocument();
     expect(screen.getByText('PRODUCED BY')).toBeInTheDocument();
     expect(screen.getByText('coder · claude-opus-4.8')).toBeInTheDocument();
     expect(screen.getByText('TypeScript')).toBeInTheDocument();

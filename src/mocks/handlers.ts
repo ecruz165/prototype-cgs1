@@ -3,6 +3,7 @@ import { jobs } from './fixtures';
 import { jobFlow } from './flowFixture';
 import { nodeDetailFor } from './nodeDetailFixture';
 import { fileDiffFor, jobOutput } from './outputFixture';
+import { gateDetailFor, jobQuality } from './qualityFixture';
 import { jobSteering, steeringDetailFor } from './steeringFixture';
 
 export const handlers = [
@@ -68,5 +69,24 @@ export const handlers = [
       return HttpResponse.json({ message: 'unknown file' }, { status: 404 });
     }
     return HttpResponse.json(diff);
+  }),
+  http.get('/api/jobs/:jobId/quality', async ({ params }) => {
+    await delay(250);
+    if (!jobs.some((job) => job.id === params.jobId)) {
+      return HttpResponse.json({ message: 'unknown job' }, { status: 404 });
+    }
+    return HttpResponse.json(jobQuality);
+  }),
+  http.get('/api/jobs/:jobId/quality/:gateId', async ({ params }) => {
+    await delay(200);
+    const detail =
+      jobs.some((job) => job.id === params.jobId) &&
+      typeof params.gateId === 'string'
+        ? gateDetailFor(params.gateId)
+        : undefined;
+    if (!detail) {
+      return HttpResponse.json({ message: 'unknown gate' }, { status: 404 });
+    }
+    return HttpResponse.json(detail);
   }),
 ];
