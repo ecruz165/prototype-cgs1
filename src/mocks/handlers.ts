@@ -1,4 +1,5 @@
 import { delay, HttpResponse, http } from 'msw';
+import { decisionDetailFor, jobActivity } from './activityFixture';
 import { haltDetailFor, jobBudget } from './budgetFixture';
 import { jobs } from './fixtures';
 import { jobFlow } from './flowFixture';
@@ -70,6 +71,28 @@ export const handlers = [
       return HttpResponse.json({ message: 'unknown file' }, { status: 404 });
     }
     return HttpResponse.json(diff);
+  }),
+  http.get('/api/jobs/:jobId/activity', async ({ params }) => {
+    await delay(250);
+    if (!jobs.some((job) => job.id === params.jobId)) {
+      return HttpResponse.json({ message: 'unknown job' }, { status: 404 });
+    }
+    return HttpResponse.json(jobActivity);
+  }),
+  http.get('/api/jobs/:jobId/activity/:decisionId', async ({ params }) => {
+    await delay(200);
+    const detail =
+      jobs.some((job) => job.id === params.jobId) &&
+      typeof params.decisionId === 'string'
+        ? decisionDetailFor(params.decisionId)
+        : undefined;
+    if (!detail) {
+      return HttpResponse.json(
+        { message: 'unknown decision' },
+        { status: 404 },
+      );
+    }
+    return HttpResponse.json(detail);
   }),
   http.get('/api/jobs/:jobId/budget', async ({ params }) => {
     await delay(250);

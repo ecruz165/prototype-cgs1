@@ -38,15 +38,18 @@ import {
   MessageSquareText,
   Newspaper,
   NotebookPen,
+  OctagonAlert,
   PiggyBank,
   Pin,
   ReceiptText,
   RefreshCw,
   Route,
   Save,
+  Scale,
   Send,
   Settings,
   ShieldUser,
+  SlidersHorizontal,
   Split,
   ThumbsUp,
   Ticket,
@@ -122,6 +125,9 @@ const designIcons: Record<string, LucideIcon> = {
   save: Save,
   do_not_disturb_on: CircleSlash,
   how_to_reg: UserCheck,
+  tune: SlidersHorizontal,
+  report: OctagonAlert,
+  balance: Scale,
 };
 
 export function designIcon(name: string): LucideIcon {

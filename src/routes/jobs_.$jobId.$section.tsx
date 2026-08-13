@@ -2,6 +2,7 @@ import { createFileRoute, Link, redirect } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { ActivityRail } from '@/components/organisms/ActivityRail';
+import { ActivitySection } from '@/components/organisms/ActivitySection';
 import { BudgetSection } from '@/components/organisms/BudgetSection';
 import { FlowSection } from '@/components/organisms/FlowSection';
 import { OutputSection } from '@/components/organisms/OutputSection';
@@ -40,6 +41,8 @@ function JobDetailPage() {
         <QualitySection jobId={jobId} paneOpen={paneOpen} />
       ) : sectionSlug === 'budget' ? (
         <BudgetSection jobId={jobId} paneOpen={paneOpen} />
+      ) : sectionSlug === 'activity' ? (
+        <ActivitySection jobId={jobId} paneOpen={paneOpen} />
       ) : (
         <PlaceholderSection label={section.label} paneOpen={paneOpen} />
       )}

@@ -1,4 +1,10 @@
 import {
+  type DecisionDetail,
+  DecisionDetailSchema,
+  type JobActivity,
+  JobActivitySchema,
+} from '@/schemas/activity';
+import {
   type HaltDetail,
   HaltDetailSchema,
   type JobBudget,
@@ -145,4 +151,27 @@ export async function fetchHaltDetail(
     );
   }
   return HaltDetailSchema.parse(await response.json());
+}
+
+export async function fetchJobActivity(jobId: string): Promise<JobActivity> {
+  const response = await fetch(`/api/jobs/${jobId}/activity`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/activity failed: ${response.status}`,
+    );
+  }
+  return JobActivitySchema.parse(await response.json());
+}
+
+export async function fetchDecisionDetail(
+  jobId: string,
+  decisionId: string,
+): Promise<DecisionDetail> {
+  const response = await fetch(`/api/jobs/${jobId}/activity/${decisionId}`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/activity/${decisionId} failed: ${response.status}`,
+    );
+  }
+  return DecisionDetailSchema.parse(await response.json());
 }
