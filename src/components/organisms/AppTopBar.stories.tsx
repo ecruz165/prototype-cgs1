@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { fn } from 'storybook/test';
+import { queryClient } from '@/lib/queryClient';
 import { ThemeProvider } from '@/lib/theme';
 import { AppTopBar } from './AppTopBar';
 
@@ -9,7 +11,9 @@ const meta = {
   decorators: [
     (Story) => (
       <ThemeProvider>
-        <Story />
+        <QueryClientProvider client={queryClient}>
+          <Story />
+        </QueryClientProvider>
       </ThemeProvider>
     ),
   ],
@@ -19,10 +23,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const WithAlerts: Story = {
-  args: { navOpen: true, alertCount: 7 },
+export const NavOpen: Story = {
+  args: { navOpen: true },
 };
 
-export const NoAlerts: Story = {
-  args: { navOpen: false, alertCount: 0 },
+export const NavCollapsed: Story = {
+  args: { navOpen: false },
 };

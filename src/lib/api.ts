@@ -20,6 +20,10 @@ import { type JobFlow, JobFlowSchema } from '@/schemas/flow';
 import { type Job, JobSchema } from '@/schemas/job';
 import { type NodeDetail, NodeDetailSchema } from '@/schemas/nodeDetail';
 import {
+  type Notifications,
+  NotificationsSchema,
+} from '@/schemas/notifications';
+import {
   type FileDiff,
   FileDiffSchema,
   type JobOutput,
@@ -234,4 +238,12 @@ export async function fetchQueryDetail(
     );
   }
   return QueryDetailSchema.parse(await response.json());
+}
+
+export async function fetchNotifications(): Promise<Notifications> {
+  const response = await fetch('/api/notifications');
+  if (!response.ok) {
+    throw new Error(`GET /api/notifications failed: ${response.status}`);
+  }
+  return NotificationsSchema.parse(await response.json());
 }

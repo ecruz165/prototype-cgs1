@@ -19,8 +19,7 @@ function RootLayout() {
 
   return (
     <div className="flex h-screen flex-col bg-background text-foreground">
-      {/* Alert count is the design's mock value until notifications exist. */}
-      <AppTopBar navOpen={navOpen} onToggleNav={toggleNav} alertCount={7} />
+      <AppTopBar navOpen={navOpen} onToggleNav={toggleNav} />
       <div className="flex min-h-0 flex-1">
         {navOpen && <NavDrawer />}
         <div className="min-w-0 flex-1 overflow-y-auto">

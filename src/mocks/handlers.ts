@@ -5,12 +5,17 @@ import { jobContext, queryDetailFor } from './contextFixture';
 import { jobs } from './fixtures';
 import { jobFlow } from './flowFixture';
 import { nodeDetailFor } from './nodeDetailFixture';
+import { notifications } from './notificationsFixture';
 import { fileDiffFor, jobOutput } from './outputFixture';
 import { jobPerformance, perfDetailFor } from './performanceFixture';
 import { gateDetailFor, jobQuality } from './qualityFixture';
 import { jobSteering, steeringDetailFor } from './steeringFixture';
 
 export const handlers = [
+  http.get('/api/notifications', async () => {
+    await delay(200);
+    return HttpResponse.json(notifications);
+  }),
   http.get('/api/jobs', async () => {
     // Artificial latency so the pending state is visible in the UI.
     await delay(400);
