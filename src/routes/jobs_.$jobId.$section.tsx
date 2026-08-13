@@ -3,6 +3,7 @@ import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { ActivityRail } from '@/components/organisms/ActivityRail';
 import { FlowSection } from '@/components/organisms/FlowSection';
+import { OutputSection } from '@/components/organisms/OutputSection';
 import { SteeringSection } from '@/components/organisms/SteeringSection';
 import { isJobSection, jobSections } from '@/lib/jobSections';
 
@@ -31,6 +32,8 @@ function JobDetailPage() {
         <FlowSection jobId={jobId} paneOpen={paneOpen} />
       ) : sectionSlug === 'steering' ? (
         <SteeringSection jobId={jobId} paneOpen={paneOpen} />
+      ) : sectionSlug === 'output' ? (
+        <OutputSection jobId={jobId} paneOpen={paneOpen} />
       ) : (
         <PlaceholderSection label={section.label} paneOpen={paneOpen} />
       )}

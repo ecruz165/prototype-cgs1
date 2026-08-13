@@ -66,7 +66,7 @@ describe('Job detail with ActivityRail', () => {
     await screen.findByRole('heading', { name: 'Generate patch' });
     await user.click(screen.getByRole('link', { name: /Changed Files/ }));
     expect(
-      await screen.findByRole('heading', { name: 'Output' }),
+      await screen.findByRole('heading', { name: 'token.service.ts' }),
     ).toBeInTheDocument();
   });
 
@@ -97,10 +97,10 @@ describe('Job detail with ActivityRail', () => {
     });
     expect(rail).toBeInTheDocument();
 
-    await user.click(screen.getByRole('link', { name: 'Output' }));
+    await user.click(screen.getByRole('link', { name: 'Quality' }));
     expect(await screen.findByText('Pane not built yet')).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { name: 'Output' }),
+      screen.getByRole('heading', { name: 'Quality' }),
     ).toBeInTheDocument();
   });
 

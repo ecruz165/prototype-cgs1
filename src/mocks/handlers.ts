@@ -2,6 +2,7 @@ import { delay, HttpResponse, http } from 'msw';
 import { jobs } from './fixtures';
 import { jobFlow } from './flowFixture';
 import { nodeDetailFor } from './nodeDetailFixture';
+import { fileDiffFor, jobOutput } from './outputFixture';
 import { jobSteering, steeringDetailFor } from './steeringFixture';
 
 export const handlers = [
@@ -48,5 +49,24 @@ export const handlers = [
       return HttpResponse.json({ message: 'unknown request' }, { status: 404 });
     }
     return HttpResponse.json(detail);
+  }),
+  http.get('/api/jobs/:jobId/output', async ({ params }) => {
+    await delay(250);
+    if (!jobs.some((job) => job.id === params.jobId)) {
+      return HttpResponse.json({ message: 'unknown job' }, { status: 404 });
+    }
+    return HttpResponse.json(jobOutput);
+  }),
+  http.get('/api/jobs/:jobId/output/files/:fileId', async ({ params }) => {
+    await delay(200);
+    const diff =
+      jobs.some((job) => job.id === params.jobId) &&
+      typeof params.fileId === 'string'
+        ? fileDiffFor(decodeURIComponent(params.fileId))
+        : undefined;
+    if (!diff) {
+      return HttpResponse.json({ message: 'unknown file' }, { status: 404 });
+    }
+    return HttpResponse.json(diff);
   }),
 ];

@@ -17,8 +17,10 @@ test('shell: redirect, sidebar navigation, disclosure, theme, collapse', async (
     page.getByRole('heading', { name: 'Generate patch' }),
   ).toBeVisible();
   await page.getByRole('link', { name: 'Output' }).click();
-  await expect(page.getByRole('heading', { name: 'Output' })).toBeVisible();
-  await page.getByRole('link', { name: 'Jobs', exact: true }).click();
+  await expect(
+    page.getByRole('heading', { name: 'token.service.ts' }),
+  ).toBeVisible();
+  await page.getByRole('link', { name: 'Back to jobs' }).click();
   await expect(page.getByRole('heading', { name: 'Jobs' })).toBeVisible();
 
   await page.getByRole('link', { name: 'Manage' }).click();

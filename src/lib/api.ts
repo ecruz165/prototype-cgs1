@@ -2,6 +2,12 @@ import { type JobFlow, JobFlowSchema } from '@/schemas/flow';
 import { type Job, JobSchema } from '@/schemas/job';
 import { type NodeDetail, NodeDetailSchema } from '@/schemas/nodeDetail';
 import {
+  type FileDiff,
+  FileDiffSchema,
+  type JobOutput,
+  JobOutputSchema,
+} from '@/schemas/output';
+import {
   type JobSteering,
   JobSteeringSchema,
   type SteeringDetail,
@@ -60,4 +66,27 @@ export async function fetchSteeringDetail(
     );
   }
   return SteeringDetailSchema.parse(await response.json());
+}
+
+export async function fetchJobOutput(jobId: string): Promise<JobOutput> {
+  const response = await fetch(`/api/jobs/${jobId}/output`);
+  if (!response.ok) {
+    throw new Error(`GET /api/jobs/${jobId}/output failed: ${response.status}`);
+  }
+  return JobOutputSchema.parse(await response.json());
+}
+
+export async function fetchFileDiff(
+  jobId: string,
+  fileId: string,
+): Promise<FileDiff> {
+  const response = await fetch(
+    `/api/jobs/${jobId}/output/files/${encodeURIComponent(fileId)}`,
+  );
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/output/files/${fileId} failed: ${response.status}`,
+    );
+  }
+  return FileDiffSchema.parse(await response.json());
 }
