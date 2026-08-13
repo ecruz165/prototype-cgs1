@@ -7,6 +7,20 @@ test('shell: redirect, sidebar navigation, disclosure, theme, collapse', async (
   await expect(page).toHaveURL(/\/jobs$/);
   await expect(page.getByRole('heading', { name: 'Jobs' })).toBeVisible();
 
+  // Into the job detail: flow pane selects the running phase, the rail
+  // switches sections, and the back link returns to the list.
+  await page
+    .getByRole('link', { name: 'Backfill analytics events to BigQuery' })
+    .click();
+  await expect(page).toHaveURL(/\/jobs\/job_8af21c\/flow$/);
+  await expect(
+    page.getByRole('heading', { name: 'Flow · Generate patch' }),
+  ).toBeVisible();
+  await page.getByRole('link', { name: 'Output' }).click();
+  await expect(page.getByRole('heading', { name: 'Output' })).toBeVisible();
+  await page.getByRole('link', { name: 'Jobs', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Jobs' })).toBeVisible();
+
   await page.getByRole('link', { name: 'Manage' }).click();
   await expect(page.getByRole('heading', { name: 'Manage' })).toBeVisible();
 

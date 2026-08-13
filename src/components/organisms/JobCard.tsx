@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router';
 import { Clock, MoreHorizontal } from 'lucide-react';
 import { Avatar } from '@/components/atoms/Avatar';
 import { StatusBadge } from '@/components/atoms/StatusBadge';
@@ -45,9 +46,13 @@ export function JobCard({ job }: { job: Job }) {
       <StatusBadge status={job.status} />
       <div className="flex min-w-0 flex-1 flex-col gap-[7px]">
         <div className="flex items-center gap-2.5">
-          <span className="truncate font-semibold text-[15px] text-foreground">
+          <Link
+            to="/jobs/$jobId"
+            params={{ jobId: job.id }}
+            className="truncate font-semibold text-[15px] text-foreground transition-colors hover:text-accent-foreground"
+          >
             {job.name}
-          </span>
+          </Link>
           <span className="shrink-0 font-mono text-[11px] text-tertiary">
             {job.id}
           </span>

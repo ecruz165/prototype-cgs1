@@ -19,6 +19,8 @@ import { Route as WorkspaceBuildRouteImport } from './routes/workspace/build'
 import { Route as WorkspacePlanRouteImport } from './routes/workspace/plan'
 import { Route as WorkspaceRunRouteImport } from './routes/workspace/run'
 import { Route as WorkspaceValidateRouteImport } from './routes/workspace/validate'
+import { Route as JobsJobIdIndexRouteImport } from './routes/jobs_.$jobId.index'
+import { Route as JobsJobIdSectionRouteImport } from './routes/jobs_.$jobId.$section'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,6 +72,16 @@ const WorkspaceValidateRoute = WorkspaceValidateRouteImport.update({
   path: '/workspace/validate',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JobsJobIdIndexRoute = JobsJobIdIndexRouteImport.update({
+  id: '/jobs_/$jobId/',
+  path: '/jobs/$jobId/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobsJobIdSectionRoute = JobsJobIdSectionRouteImport.update({
+  id: '/jobs_/$jobId/$section',
+  path: '/jobs/$jobId/$section',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +94,8 @@ export interface FileRoutesByFullPath {
   '/workspace/plan': typeof WorkspacePlanRoute
   '/workspace/run': typeof WorkspaceRunRoute
   '/workspace/validate': typeof WorkspaceValidateRoute
+  '/jobs/$jobId/$section': typeof JobsJobIdSectionRoute
+  '/jobs/$jobId/': typeof JobsJobIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +108,8 @@ export interface FileRoutesByTo {
   '/workspace/plan': typeof WorkspacePlanRoute
   '/workspace/run': typeof WorkspaceRunRoute
   '/workspace/validate': typeof WorkspaceValidateRoute
+  '/jobs/$jobId/$section': typeof JobsJobIdSectionRoute
+  '/jobs/$jobId': typeof JobsJobIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +123,8 @@ export interface FileRoutesById {
   '/workspace/plan': typeof WorkspacePlanRoute
   '/workspace/run': typeof WorkspaceRunRoute
   '/workspace/validate': typeof WorkspaceValidateRoute
+  '/jobs_/$jobId/$section': typeof JobsJobIdSectionRoute
+  '/jobs_/$jobId/': typeof JobsJobIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +139,8 @@ export interface FileRouteTypes {
     | '/workspace/plan'
     | '/workspace/run'
     | '/workspace/validate'
+    | '/jobs/$jobId/$section'
+    | '/jobs/$jobId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +153,8 @@ export interface FileRouteTypes {
     | '/workspace/plan'
     | '/workspace/run'
     | '/workspace/validate'
+    | '/jobs/$jobId/$section'
+    | '/jobs/$jobId'
   id:
     | '__root__'
     | '/'
@@ -145,6 +167,8 @@ export interface FileRouteTypes {
     | '/workspace/plan'
     | '/workspace/run'
     | '/workspace/validate'
+    | '/jobs_/$jobId/$section'
+    | '/jobs_/$jobId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +182,8 @@ export interface RootRouteChildren {
   WorkspacePlanRoute: typeof WorkspacePlanRoute
   WorkspaceRunRoute: typeof WorkspaceRunRoute
   WorkspaceValidateRoute: typeof WorkspaceValidateRoute
+  JobsJobIdSectionRoute: typeof JobsJobIdSectionRoute
+  JobsJobIdIndexRoute: typeof JobsJobIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -232,6 +258,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkspaceValidateRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jobs_/$jobId/': {
+      id: '/jobs_/$jobId/'
+      path: '/jobs/$jobId'
+      fullPath: '/jobs/$jobId/'
+      preLoaderRoute: typeof JobsJobIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jobs_/$jobId/$section': {
+      id: '/jobs_/$jobId/$section'
+      path: '/jobs/$jobId/$section'
+      fullPath: '/jobs/$jobId/$section'
+      preLoaderRoute: typeof JobsJobIdSectionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -246,6 +286,8 @@ const rootRouteChildren: RootRouteChildren = {
   WorkspacePlanRoute: WorkspacePlanRoute,
   WorkspaceRunRoute: WorkspaceRunRoute,
   WorkspaceValidateRoute: WorkspaceValidateRoute,
+  JobsJobIdSectionRoute: JobsJobIdSectionRoute,
+  JobsJobIdIndexRoute: JobsJobIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
