@@ -6,6 +6,7 @@ import { ActivitySection } from '@/components/organisms/ActivitySection';
 import { BudgetSection } from '@/components/organisms/BudgetSection';
 import { FlowSection } from '@/components/organisms/FlowSection';
 import { OutputSection } from '@/components/organisms/OutputSection';
+import { PerformanceSection } from '@/components/organisms/PerformanceSection';
 import { QualitySection } from '@/components/organisms/QualitySection';
 import { SteeringSection } from '@/components/organisms/SteeringSection';
 import { isJobSection, jobSections } from '@/lib/jobSections';
@@ -43,6 +44,8 @@ function JobDetailPage() {
         <BudgetSection jobId={jobId} paneOpen={paneOpen} />
       ) : sectionSlug === 'activity' ? (
         <ActivitySection jobId={jobId} paneOpen={paneOpen} />
+      ) : sectionSlug === 'performance' ? (
+        <PerformanceSection jobId={jobId} paneOpen={paneOpen} />
       ) : (
         <PlaceholderSection label={section.label} paneOpen={paneOpen} />
       )}

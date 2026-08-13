@@ -20,6 +20,12 @@ import {
   JobOutputSchema,
 } from '@/schemas/output';
 import {
+  type JobPerformance,
+  JobPerformanceSchema,
+  type PerfDetail,
+  PerfDetailSchema,
+} from '@/schemas/performance';
+import {
   type GateDetail,
   GateDetailSchema,
   type JobQuality,
@@ -174,4 +180,29 @@ export async function fetchDecisionDetail(
     );
   }
   return DecisionDetailSchema.parse(await response.json());
+}
+
+export async function fetchJobPerformance(
+  jobId: string,
+): Promise<JobPerformance> {
+  const response = await fetch(`/api/jobs/${jobId}/performance`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/performance failed: ${response.status}`,
+    );
+  }
+  return JobPerformanceSchema.parse(await response.json());
+}
+
+export async function fetchPerfDetail(
+  jobId: string,
+  itemId: string,
+): Promise<PerfDetail> {
+  const response = await fetch(`/api/jobs/${jobId}/performance/${itemId}`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/performance/${itemId} failed: ${response.status}`,
+    );
+  }
+  return PerfDetailSchema.parse(await response.json());
 }

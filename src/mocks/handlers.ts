@@ -5,6 +5,7 @@ import { jobs } from './fixtures';
 import { jobFlow } from './flowFixture';
 import { nodeDetailFor } from './nodeDetailFixture';
 import { fileDiffFor, jobOutput } from './outputFixture';
+import { jobPerformance, perfDetailFor } from './performanceFixture';
 import { gateDetailFor, jobQuality } from './qualityFixture';
 import { jobSteering, steeringDetailFor } from './steeringFixture';
 
@@ -110,6 +111,25 @@ export const handlers = [
         : undefined;
     if (!detail) {
       return HttpResponse.json({ message: 'unknown gate' }, { status: 404 });
+    }
+    return HttpResponse.json(detail);
+  }),
+  http.get('/api/jobs/:jobId/performance', async ({ params }) => {
+    await delay(250);
+    if (!jobs.some((job) => job.id === params.jobId)) {
+      return HttpResponse.json({ message: 'unknown job' }, { status: 404 });
+    }
+    return HttpResponse.json(jobPerformance);
+  }),
+  http.get('/api/jobs/:jobId/performance/:itemId', async ({ params }) => {
+    await delay(200);
+    const detail =
+      jobs.some((job) => job.id === params.jobId) &&
+      typeof params.itemId === 'string'
+        ? perfDetailFor(params.itemId)
+        : undefined;
+    if (!detail) {
+      return HttpResponse.json({ message: 'unknown item' }, { status: 404 });
     }
     return HttpResponse.json(detail);
   }),
