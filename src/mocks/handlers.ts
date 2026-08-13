@@ -1,4 +1,5 @@
 import { delay, HttpResponse, http } from 'msw';
+import { haltDetailFor, jobBudget } from './budgetFixture';
 import { jobs } from './fixtures';
 import { jobFlow } from './flowFixture';
 import { nodeDetailFor } from './nodeDetailFixture';
@@ -69,6 +70,25 @@ export const handlers = [
       return HttpResponse.json({ message: 'unknown file' }, { status: 404 });
     }
     return HttpResponse.json(diff);
+  }),
+  http.get('/api/jobs/:jobId/budget', async ({ params }) => {
+    await delay(250);
+    if (!jobs.some((job) => job.id === params.jobId)) {
+      return HttpResponse.json({ message: 'unknown job' }, { status: 404 });
+    }
+    return HttpResponse.json(jobBudget);
+  }),
+  http.get('/api/jobs/:jobId/budget/:gateId', async ({ params }) => {
+    await delay(200);
+    const detail =
+      jobs.some((job) => job.id === params.jobId) &&
+      typeof params.gateId === 'string'
+        ? haltDetailFor(params.gateId)
+        : undefined;
+    if (!detail) {
+      return HttpResponse.json({ message: 'unknown gate' }, { status: 404 });
+    }
+    return HttpResponse.json(detail);
   }),
   http.get('/api/jobs/:jobId/quality', async ({ params }) => {
     await delay(250);

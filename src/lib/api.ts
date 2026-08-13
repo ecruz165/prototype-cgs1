@@ -1,3 +1,9 @@
+import {
+  type HaltDetail,
+  HaltDetailSchema,
+  type JobBudget,
+  JobBudgetSchema,
+} from '@/schemas/budget';
 import { type JobFlow, JobFlowSchema } from '@/schemas/flow';
 import { type Job, JobSchema } from '@/schemas/job';
 import { type NodeDetail, NodeDetailSchema } from '@/schemas/nodeDetail';
@@ -118,4 +124,25 @@ export async function fetchGateDetail(
     );
   }
   return GateDetailSchema.parse(await response.json());
+}
+
+export async function fetchJobBudget(jobId: string): Promise<JobBudget> {
+  const response = await fetch(`/api/jobs/${jobId}/budget`);
+  if (!response.ok) {
+    throw new Error(`GET /api/jobs/${jobId}/budget failed: ${response.status}`);
+  }
+  return JobBudgetSchema.parse(await response.json());
+}
+
+export async function fetchHaltDetail(
+  jobId: string,
+  gateId: string,
+): Promise<HaltDetail> {
+  const response = await fetch(`/api/jobs/${jobId}/budget/${gateId}`);
+  if (!response.ok) {
+    throw new Error(
+      `GET /api/jobs/${jobId}/budget/${gateId} failed: ${response.status}`,
+    );
+  }
+  return HaltDetailSchema.parse(await response.json());
 }

@@ -76,7 +76,7 @@ describe('Quality section', () => {
     await screen.findByRole('heading', { name: 'Coverage ≥ 80%' });
     await user.click(screen.getByRole('link', { name: /Halt semantics/ }));
     expect(
-      await screen.findByRole('heading', { name: 'Budget & Gates' }),
+      await screen.findByRole('heading', { name: 'Cost ceiling' }),
     ).toBeInTheDocument();
   });
 });
